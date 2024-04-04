@@ -1,0 +1,1 @@
+{"version":3,"file":"botMessage.d.ts","sourceRoot":"","sources":["../../src/layout/botMessage.tsx"],"names":[],"mappings":";AAKA,OAAO,EAAE,IAAI,EAAE,MAAM,UAAU,CAAC;AAOhC,UAAU,WAAW;IACjB,IAAI,EAAE,IAAI,CAAC;IACX,MAAM,EAAE,MAAM,CAAC;IACf,WAAW,EAAE,MAAM,CAAC;CACvB;AAED,QAAA,MAAM,UAAU,EAAE,KAAK,CAAC,EAAE,CAAC,WAAW,CA+FrC,CAAC;AAEF,eAAe,UAAU,CAAC"}
