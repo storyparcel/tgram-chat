@@ -1,7 +1,27 @@
-import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
-import * as React$1 from 'react';
-import React__default$1, { useCallback, useEffect, useState, useRef, forwardRef, createContext, useContext, useMemo } from 'react';
-import require$$1 from 'react-dom';
+'use strict';
+
+var jsxRuntime = require('react/jsx-runtime');
+var React$1 = require('react');
+var require$$1 = require('react-dom');
+
+function _interopNamespaceDefault(e) {
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n.default = e;
+  return Object.freeze(n);
+}
+
+var React__namespace = /*#__PURE__*/_interopNamespaceDefault(React$1);
 
 function _callSuper(t, o, e) {
   return o = _getPrototypeOf$1(o), _possibleConstructorReturn$1(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf$1(t).constructor) : o.apply(t, e));
@@ -829,10 +849,10 @@ styleInject(css_248z$9);
 
 var NextLiner = function NextLiner(_a) {
   var text = _a.text;
-  return jsx("div", {
+  return jsxRuntime.jsx("div", {
     children: text.split('\n').map(function (txt) {
-      return jsxs(Fragment, {
-        children: [txt, jsx("br", {})]
+      return jsxRuntime.jsxs(jsxRuntime.Fragment, {
+        children: [txt, jsxRuntime.jsx("br", {})]
       });
     })
   });
@@ -843,10 +863,10 @@ var styles$8 = {"layout":"suggestQuery-module_layout__svjSG","questionItem":"sug
 styleInject(css_248z$8);
 
 var SuggestQuery = function SuggestQuery(props) {
-  return jsx("div", {
+  return jsxRuntime.jsx("div", {
     className: styles$8.layout,
     children: props.queries.map(function (query, i) {
-      return jsx("button", {
+      return jsxRuntime.jsx("button", {
         className: styles$8.questionItem,
         onClick: function onClick() {
           return props.sendMessage(query.query);
@@ -871,21 +891,21 @@ var styles$7 = {"layout":"chatModelSelector-module_layout__MOZu3","innerWrapper"
 styleInject(css_248z$7);
 
 var ChatModelSelector = function ChatModelSelector(props) {
-  var getButtonStyles = useCallback(function (modelName) {
+  var getButtonStyles = React$1.useCallback(function (modelName) {
     var active = modelName === props.chatModel;
     return {
       color: active ? '#30343C' : '#7B7D84',
       borderColor: active ? props.chatModel === 'T GRAM' ? '#3B88FF' : props.chatModel === 'GPT 3.5' ? '#10A37F' : props.chatModel === 'GPT 4' ? '#A661F0' : '#ffffff' : '#ffffff'
     };
   }, [props.chatModel]);
-  return jsx("div", {
+  return jsxRuntime.jsx("div", {
     className: styles$7.layout,
-    children: jsx("div", {
+    children: jsxRuntime.jsx("div", {
       className: styles$7.innerWrapper,
       children: Object.entries(CHAT_MODEL_LOGOS).map(function (_a) {
         var modelName = _a[0],
           logo = _a[1];
-        return jsxs("button", {
+        return jsxRuntime.jsxs("button", {
           className: styles$7.modelButton,
           // @ts-ignore
           style: getButtonStyles(modelName),
@@ -893,12 +913,12 @@ var ChatModelSelector = function ChatModelSelector(props) {
           onClick: function onClick() {
             return props.onChange(modelName);
           },
-          children: [jsx("img", {
+          children: [jsxRuntime.jsx("img", {
             src: logo,
             alt: modelName,
             width: 20,
             height: 20
-          }), jsx("div", {
+          }), jsxRuntime.jsx("div", {
             children: modelName
           })]
         }, modelName);
@@ -912,9 +932,9 @@ var styles$6 = {"layout":"myMessage-module_layout__VEKYL","message":"myMessage-m
 styleInject(css_248z$6);
 
 var MyMessage = function MyMessage(props) {
-  return jsx("div", {
+  return jsxRuntime.jsx("div", {
     className: styles$6.layout,
-    children: jsx("div", {
+    children: jsxRuntime.jsx("div", {
       className: styles$6.message,
       children: props.message
     })
@@ -1899,12 +1919,12 @@ var useLottie = function useLottie(props, style) {
   props.assetsPath;
   props.rendererSettings;
   var rest = _objectWithoutProperties$1(props, _excluded$1$1);
-  var _useState = useState(false),
+  var _useState = React$1.useState(false),
     _useState2 = _slicedToArray$1(_useState, 2),
     animationLoaded = _useState2[0],
     setAnimationLoaded = _useState2[1];
-  var animationInstanceRef = useRef();
-  var animationContainer = useRef(null);
+  var animationInstanceRef = React$1.useRef();
+  var animationContainer = React$1.useRef(null);
   /*
         ======================================
             INTERACTION METHODS
@@ -2035,7 +2055,7 @@ var useLottie = function useLottie(props, style) {
   /**
    * (Re)Initialize when animation data changed
    */
-  useEffect(function () {
+  React$1.useEffect(function () {
     var onUnmount = loadAnimation();
     // Clean up on unmount
     return function () {
@@ -2044,14 +2064,14 @@ var useLottie = function useLottie(props, style) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animationData, loop]);
   // Update the autoplay state
-  useEffect(function () {
+  React$1.useEffect(function () {
     if (!animationInstanceRef.current) {
       return;
     }
     animationInstanceRef.current.autoplay = !!autoplay;
   }, [autoplay]);
   // Update the initial segment state
-  useEffect(function () {
+  React$1.useEffect(function () {
     if (!animationInstanceRef.current) {
       return;
     }
@@ -2080,7 +2100,7 @@ var useLottie = function useLottie(props, style) {
   /**
    * Reinitialize listener on change
    */
-  useEffect(function () {
+  React$1.useEffect(function () {
     var partialListeners = [{
       name: "complete",
       handler: onComplete
@@ -2143,7 +2163,7 @@ var useLottie = function useLottie(props, style) {
   /**
    * Build the animation view
    */
-  var View = /*#__PURE__*/React__default$1.createElement("div", _objectSpread2$1({
+  var View = /*#__PURE__*/React$1.createElement("div", _objectSpread2$1({
     style: style,
     ref: animationContainer
   }, rest));
@@ -2193,7 +2213,7 @@ var useInitInteractivity = function useInitInteractivity(_ref) {
     animationItem = _ref.animationItem,
     mode = _ref.mode,
     actions = _ref.actions;
-  useEffect(function () {
+  React$1.useEffect(function () {
     var wrapper = wrapperRef.current;
     if (!wrapper || !animationItem || !actions.length) {
       return;
@@ -2367,7 +2387,7 @@ var Lottie = function Lottie(props) {
   /**
    * Make the hook variables/methods available through the provided 'lottieRef'
    */
-  useEffect(function () {
+  React$1.useEffect(function () {
     if (props.lottieRef) {
       props.lottieRef.current = {
         play: play,
@@ -3097,7 +3117,7 @@ var LoadingJson = {
 var Loading = function Loading(props) {
   var _a, _b;
   if (props.loading) {
-    return jsx(Lottie, {
+    return jsxRuntime.jsx(Lottie, {
       animationData: LoadingJson,
       style: {
         width: (_a = props.size) !== null && _a !== void 0 ? _a : 36,
@@ -3114,13 +3134,13 @@ styleInject(css_248z$4);
 
 var UrlBlock = function UrlBlock(props) {
   var _a;
-  return jsx("ul", {
+  return jsxRuntime.jsx("ul", {
     className: styles$4.layout,
     children: ((_a = props.urls) !== null && _a !== void 0 ? _a : []).map(function (url, i, arr) {
       var _a;
-      return jsx("li", {
+      return jsxRuntime.jsx("li", {
         className: styles$4.urlWrapper,
-        children: jsx("a", {
+        children: jsxRuntime.jsx("a", {
           style: {
             padding: 12,
             display: 'block'
@@ -3133,14 +3153,14 @@ var UrlBlock = function UrlBlock(props) {
               props.onClickLink(url.url);
             }
           },
-          children: jsxs("div", {
+          children: jsxRuntime.jsxs("div", {
             className: styles$4.thumbnailWrapper,
-            children: [jsx("img", {
+            children: [jsxRuntime.jsx("img", {
               src: (_a = url.thumbnail) !== null && _a !== void 0 ? _a : CHAT_DEFAULT_IMAGE,
               alt: url.title,
               width: 48,
               height: 48
-            }), jsx("div", {
+            }), jsxRuntime.jsx("div", {
               children: url.title
             })]
           })
@@ -22509,11 +22529,11 @@ function Markdown(options) {
   }
   visit(hastTree, transform);
   return toJsxRuntime(hastTree, {
-    Fragment: Fragment,
+    Fragment: jsxRuntime.Fragment,
     components: components,
     ignoreInvalidStyle: true,
-    jsx: jsx,
-    jsxs: jsxs,
+    jsx: jsxRuntime.jsx,
+    jsxs: jsxRuntime.jsxs,
     passKeys: true,
     passNode: true
   });
@@ -28076,17 +28096,17 @@ var css_248z$3 = ".markdownRenderer-module_wrapper__SleVR {\n    color: #30343C;
 var styles$3 = {"wrapper":"markdownRenderer-module_wrapper__SleVR","link":"markdownRenderer-module_link__-pc4p"};
 styleInject(css_248z$3);
 
-var MarkdownRenderer = /*#__PURE__*/forwardRef(function (props, ref) {
-  return jsx("div", {
+var MarkdownRenderer = /*#__PURE__*/React$1.forwardRef(function (props, ref) {
+  return jsxRuntime.jsx("div", {
     className: styles$3.wrapper,
-    children: jsx("div", {
+    children: jsxRuntime.jsx("div", {
       ref: ref,
-      children: jsx(Markdown, {
+      children: jsxRuntime.jsx(Markdown, {
         components: {
           a: function a(_a) {
             _a.node;
               var linkProps = __rest$1(_a, ["node"]);
-            return jsx("a", {
+            return jsxRuntime.jsx("a", {
               className: styles$3.link,
               href: linkProps.href,
               target: '_blank',
@@ -28112,15 +28132,15 @@ var styles$2 = {"layout":"searchingBlock-module_layout__5tpdS"};
 styleInject(css_248z$2);
 
 var SearchingBlock = function SearchingBlock(props) {
-  return jsx("div", {
+  return jsxRuntime.jsx("div", {
     className: styles$2.layout,
     children: props.message
   });
 };
 
-var KeyContext = /*#__PURE__*/createContext(undefined);
+var KeyContext = /*#__PURE__*/React$1.createContext(undefined);
 var useKeyContext = function useKeyContext() {
-  var context = useContext(KeyContext);
+  var context = React$1.useContext(KeyContext);
   if (!context) {
     throw new Error('useKeyContext must be used within an KeyProvider');
   }
@@ -28128,10 +28148,10 @@ var useKeyContext = function useKeyContext() {
 };
 var KeyProvider = function KeyProvider(_a) {
   var children = _a.children;
-  var _b = useState(null),
+  var _b = React$1.useState(null),
     apiKey = _b[0],
     setApiKey = _b[1];
-  var _c = useState(null),
+  var _c = React$1.useState(null),
     clientId = _c[0],
     setClientId = _c[1];
   var setKeys = function setKeys(newApiKey, newClientId) {
@@ -28143,7 +28163,7 @@ var KeyProvider = function KeyProvider(_a) {
     clientId: clientId,
     setKeys: setKeys
   };
-  return jsx(KeyContext.Provider, {
+  return jsxRuntime.jsx(KeyContext.Provider, {
     value: contextValue,
     children: children
   });
@@ -28151,8 +28171,8 @@ var KeyProvider = function KeyProvider(_a) {
 
 var BotMessage = function BotMessage(props) {
   var _a, _b, _c, _d;
-  var markdownRef = useRef(null);
-  var loading = useMemo(function () {
+  var markdownRef = React$1.useRef(null);
+  var loading = React$1.useMemo(function () {
     return props.chat.terminated === false;
   }, [props.chat.terminated]);
   var _e = useKeyContext(),
@@ -28181,11 +28201,11 @@ var BotMessage = function BotMessage(props) {
       });
     });
   };
-  var extraData = useMemo(function () {
+  var extraData = React$1.useMemo(function () {
     var _a;
     return (_a = props.chat) === null || _a === void 0 ? void 0 : _a.data;
   }, [(_a = props.chat) === null || _a === void 0 ? void 0 : _a.data]);
-  var searchToolCall = useMemo(function () {
+  var searchToolCall = React$1.useMemo(function () {
     var _a;
     return (_a = extraData === null || extraData === void 0 ? void 0 : extraData.tool_calls) === null || _a === void 0 ? void 0 : _a.find(function (toolCall) {
       return toolCall.action === 'Search';
@@ -28197,44 +28217,44 @@ var BotMessage = function BotMessage(props) {
       navigator.clipboard.writeText(messageText);
     }
   };
-  return jsxs("div", {
+  return jsxRuntime.jsxs("div", {
     className: styles$5.layout,
-    children: [jsxs("div", {
+    children: [jsxRuntime.jsxs("div", {
       className: styles$5.botProfile,
-      children: [jsx("img", {
+      children: [jsxRuntime.jsx("img", {
         src: props.aiThumbnail,
         alt: (_b = props.aiName) !== null && _b !== void 0 ? _b : 'profile',
         width: 20,
         height: 20
-      }), jsx("div", {
+      }), jsxRuntime.jsx("div", {
         children: props.aiName
       })]
-    }), jsx("div", {
+    }), jsxRuntime.jsx("div", {
       className: styles$5.message,
-      children: searchToolCall ? jsx(SearchingBlock, {
+      children: searchToolCall ? jsxRuntime.jsx(SearchingBlock, {
         message: searchToolCall.action_message
-      }) : jsxs(Fragment, {
-        children: [jsx(MarkdownRenderer, {
+      }) : jsxRuntime.jsxs(jsxRuntime.Fragment, {
+        children: [jsxRuntime.jsx(MarkdownRenderer, {
           markdown: props.chat.message,
           onClickLink: onClickLink,
           ref: markdownRef
-        }), ((_c = extraData === null || extraData === void 0 ? void 0 : extraData.urls) !== null && _c !== void 0 ? _c : []).length > 0 && jsx(UrlBlock, {
+        }), ((_c = extraData === null || extraData === void 0 ? void 0 : extraData.urls) !== null && _c !== void 0 ? _c : []).length > 0 && jsxRuntime.jsx(UrlBlock, {
           urls: (_d = extraData === null || extraData === void 0 ? void 0 : extraData.urls) !== null && _d !== void 0 ? _d : [],
           onClickLink: onClickLink
-        }), jsxs("div", {
+        }), jsxRuntime.jsxs("div", {
           className: styles$5.utilButtonWrapper,
-          children: [jsx("button", {
+          children: [jsxRuntime.jsx("button", {
             className: styles$5.utilButton,
             onClick: copyAnswer,
-            children: jsx("img", {
+            children: jsxRuntime.jsx("img", {
               src: ClipboardImg,
               width: 20,
               height: 20,
               alt: 'clipboard'
             })
-          }), jsx("button", {
+          }), jsxRuntime.jsx("button", {
             className: styles$5.utilButton,
-            children: jsx("img", {
+            children: jsxRuntime.jsx("img", {
               src: ShareImg,
               width: 20,
               height: 20,
@@ -28243,9 +28263,9 @@ var BotMessage = function BotMessage(props) {
           })]
         })]
       })
-    }), jsx("div", {
+    }), jsxRuntime.jsx("div", {
       className: styles$5.loadingWrapper,
-      children: jsx(Loading, {
+      children: jsxRuntime.jsx(Loading, {
         loading: loading
       })
     })]
@@ -28259,27 +28279,27 @@ styleInject(css_248z$1);
 var MoreDotImg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\">\n    <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.39961 7.19999C4.84144 7.19999 5.19961 7.55816 5.19961 7.99999C5.19961 8.44182 4.84144 8.79999 4.39961 8.79999C3.95778 8.79999 3.59961 8.44182 3.59961 7.99999C3.59961 7.55816 3.95778 7.19999 4.39961 7.19999ZM7.99961 7.19999C8.44144 7.19999 8.79961 7.55816 8.79961 7.99999C8.79961 8.44182 8.44144 8.79999 7.99961 8.79999C7.55778 8.79999 7.19961 8.44182 7.19961 7.99999C7.19961 7.55816 7.55778 7.19999 7.99961 7.19999ZM12.3996 7.99999C12.3996 7.55816 12.0414 7.19999 11.5996 7.19999C11.1578 7.19999 10.7996 7.55816 10.7996 7.99999C10.7996 8.44182 11.1578 8.79999 11.5996 8.79999C12.0414 8.79999 12.3996 8.44182 12.3996 7.99999Z\" fill=\"white\"/>\n</svg>";
 
 var SuggestedQueryByUserQuery = function SuggestedQueryByUserQuery(props) {
-  return jsxs("div", {
-    children: [jsxs("div", {
+  return jsxRuntime.jsxs("div", {
+    children: [jsxRuntime.jsxs("div", {
       className: styles$1.titleWrapper,
-      children: [jsx("div", {
+      children: [jsxRuntime.jsx("div", {
         className: styles$1.titleIconWrapper,
-        children: jsx("img", {
+        children: jsxRuntime.jsx("img", {
           src: MoreDotImg,
           alt: 'suggest-icon',
           width: 16,
           height: 16
         })
-      }), jsx("div", {
+      }), jsxRuntime.jsx("div", {
         className: styles$1.title,
         children: "\uCD94\uCC9C\uC9C8\uBB38"
       })]
-    }), jsx("ul", {
+    }), jsxRuntime.jsx("ul", {
       className: styles$1.balloonWrapper,
       children: props.queries.map(function (query, i, arr) {
-        return jsx("li", {
+        return jsxRuntime.jsx("li", {
           className: styles$1.queryBalloonItem,
-          children: jsx("div", {
+          children: jsxRuntime.jsx("div", {
             className: styles$1.queryBalloon,
             onClick: function onClick() {
               return props.sendMessage(query);
@@ -28293,14 +28313,14 @@ var SuggestedQueryByUserQuery = function SuggestedQueryByUserQuery(props) {
 };
 
 var BalloonWrapper = function BalloonWrapper(props) {
-  var renderMessage = useCallback(function (chat) {
+  var renderMessage = React$1.useCallback(function (chat) {
     switch (chat.type) {
-      case MessageType.MY:
-        return jsx(MyMessage, {
+      case exports.MessageType.MY:
+        return jsxRuntime.jsx(MyMessage, {
           message: chat.message
         });
-      case MessageType.BOT:
-        return jsx(BotMessage, {
+      case exports.MessageType.BOT:
+        return jsxRuntime.jsx(BotMessage, {
           chat: chat,
           aiName: props.aiName,
           aiThumbnail: props.aiThumbnail
@@ -28309,22 +28329,22 @@ var BalloonWrapper = function BalloonWrapper(props) {
         return null;
     }
   }, [props.aiName, props.aiThumbnail]);
-  var needShowSuggestedQueryByUserQuery = useMemo(function () {
+  var needShowSuggestedQueryByUserQuery = React$1.useMemo(function () {
     var _a;
-    return !props.responding && ((_a = props.chats[props.chats.length - 1]) === null || _a === void 0 ? void 0 : _a.type) === MessageType.BOT;
+    return !props.responding && ((_a = props.chats[props.chats.length - 1]) === null || _a === void 0 ? void 0 : _a.type) === exports.MessageType.BOT;
   }, [props.responding, props.chats.length]);
-  return jsxs(Fragment, {
-    children: [jsx("div", {
+  return jsxRuntime.jsxs(jsxRuntime.Fragment, {
+    children: [jsxRuntime.jsx("div", {
       className: styles$5.wrapper,
       children: props.chats.map(function (chat, i) {
-        return jsx("div", {
+        return jsxRuntime.jsx("div", {
           style: {
             transform: 'translateZ(0)'
           },
           children: renderMessage(chat)
         }, "".concat(chat.message, "-").concat(i));
       })
-    }), needShowSuggestedQueryByUserQuery && jsx(SuggestedQueryByUserQuery, {
+    }), needShowSuggestedQueryByUserQuery && jsxRuntime.jsx(SuggestedQueryByUserQuery, {
       queries: props.suggestedQueryByUserQuery,
       sendMessage: props.sendMessage
     })]
@@ -28371,8 +28391,8 @@ var updateRef = function updateRef(ref, value) {
   ref.current = value;
 };
 var useComposedRef = function useComposedRef(libRef, userRef) {
-  var prevUserRef = useRef();
-  return useCallback(function (instance) {
+  var prevUserRef = React$1.useRef();
+  return React$1.useCallback(function (instance) {
     libRef.current = instance;
     if (prevUserRef.current) {
       updateRef(prevUserRef.current, null);
@@ -28396,28 +28416,28 @@ var TextareaAutosize = function TextareaAutosize(_ref, userRef) {
   _ref.onHeightChange;
   var props = _objectWithoutPropertiesLoose$1(_ref, _excluded);
   props.value !== undefined;
-  var libRef = React$1.useRef(null);
+  var libRef = React__namespace.useRef(null);
   var ref = useComposedRef(libRef, userRef);
-  React$1.useRef(0);
-  React$1.useRef();
-  return /*#__PURE__*/React$1.createElement("textarea", _extends$1({}, props, {
+  React__namespace.useRef(0);
+  React__namespace.useRef();
+  return /*#__PURE__*/React__namespace.createElement("textarea", _extends$1({}, props, {
     onChange: onChange,
     ref: ref
   }));
 };
-var index = /* #__PURE__ */React$1.forwardRef(TextareaAutosize);
+var index = /* #__PURE__ */React__namespace.forwardRef(TextareaAutosize);
 
 var css_248z = ".chatInput-module_layout__3ofoE {\n    position: relative;\n}\n\n.chatInput-module_textArea__ClDao {\n    box-sizing: border-box;\n    background-color: #ffffff;\n    line-height: 20px;\n    color: #30343C;\n    padding: 22px 24px;\n    width: 100%;\n    border: 1px solid #DCDEE4;\n    border-radius: 4px;\n    transition: border-color 0.2s ease;\n    font-size: 14px;\n    font-weight: 600;\n    resize: none;\n}\n\n.chatInput-module_textArea__ClDao:focus {\n    outline: none;\n    border-color: #3B88FF;\n}\n\n.chatInput-module_textArea__ClDao::placeholder {\n    color: #BCBEC6;\n    font-weight: 400;\n}\n\n.chatInput-module_submitButton__M5-PH {\n    position: absolute;\n    top: 11px;\n    right: 12px;\n    padding: 12px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n.chatInput-module_submitButton__M5-PH:active {\n    filter: brightness(85%);\n}\n\n.chatInput-module_loadingWrapper__RyBFU {\n    position: absolute;\n    top: 0;\n    right: 0;\n    padding: 7px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}";
 var styles = {"layout":"chatInput-module_layout__3ofoE","textArea":"chatInput-module_textArea__ClDao","submitButton":"chatInput-module_submitButton__M5-PH","loadingWrapper":"chatInput-module_loadingWrapper__RyBFU"};
 styleInject(css_248z);
 
 var ChatInput = function ChatInput(props) {
-  var submitButtonRef = useRef(null);
-  var handleSubmit = useCallback(function (e) {
+  var submitButtonRef = React$1.useRef(null);
+  var handleSubmit = React$1.useCallback(function (e) {
     e.preventDefault();
     props.sendMessage();
   }, [props.sendMessage]);
-  var handleKeyDown = useCallback(function (e) {
+  var handleKeyDown = React$1.useCallback(function (e) {
     var _a;
     if (e.nativeEvent.isComposing || e.nativeEvent.key === 'Process') {
       return;
@@ -28427,10 +28447,10 @@ var ChatInput = function ChatInput(props) {
       (_a = submitButtonRef.current) === null || _a === void 0 ? void 0 : _a.click();
     }
   }, [props.sendMessage]);
-  return jsxs("form", {
+  return jsxRuntime.jsxs("form", {
     className: styles.layout,
     onSubmit: handleSubmit,
-    children: [jsx(index, {
+    children: [jsxRuntime.jsx(index, {
       className: styles.textArea,
       maxRows: CHAT_INPUT_MAX_ROWS,
       maxLength: CHAT_INPUT_MAX_SIZE,
@@ -28439,17 +28459,17 @@ var ChatInput = function ChatInput(props) {
       onChange: props.onChange,
       placeholder: props.placeholder,
       onKeyDown: handleKeyDown
-    }), props.responding ? jsx("div", {
+    }), props.responding ? jsxRuntime.jsx("div", {
       className: styles.loadingWrapper,
-      children: jsx(Loading, {
+      children: jsxRuntime.jsx(Loading, {
         loading: true
       })
-    }) : jsx("button", {
+    }) : jsxRuntime.jsx("button", {
       className: styles.submitButton,
       ref: submitButtonRef,
       type: 'submit',
       disabled: props.disabledSubmit,
-      children: jsx("img", {
+      children: jsxRuntime.jsx("img", {
         src: props.disabledSubmit ? SendInActiveImg : SendActiveImg,
         width: 20,
         height: 20,
@@ -28460,39 +28480,39 @@ var ChatInput = function ChatInput(props) {
 };
 
 var ChatBotTemplate = function ChatBotTemplate(props) {
-  var scrollRef = useRef(null);
+  var scrollRef = React$1.useRef(null);
   // const { setKeys } = useKeyContext();
-  var disabledSubmit = useMemo(function () {
+  var disabledSubmit = React$1.useMemo(function () {
     return props.chatText === '' || !props.isReady || props.responding === true;
   }, [props.chatText, props.isReady, props.responding]);
   // useEffect(() => {
   //     setKeys(props.apiKey, props.clientId);
   // }, [ props.apiKey, props.clientId ]);
-  return jsxs(Fragment, {
-    children: [jsx("div", {
+  return jsxRuntime.jsxs(jsxRuntime.Fragment, {
+    children: [jsxRuntime.jsx("div", {
       ref: scrollRef,
       className: styles$9.layout,
-      children: jsxs("div", {
+      children: jsxRuntime.jsxs("div", {
         className: styles$9.scrollInnerWrapper,
-        children: [jsx(ChatModelSelector, {
+        children: [jsxRuntime.jsx(ChatModelSelector, {
           chatModel: props.chatModel,
           onChange: props.handleChatModelChange
-        }), jsx("div", {
+        }), jsxRuntime.jsx("div", {
           className: styles$9.greeting,
-          children: jsx(NextLiner, {
+          children: jsxRuntime.jsx(NextLiner, {
             text: props.botData.ai_greeting
           })
-        }), jsx("div", {
+        }), jsxRuntime.jsx("div", {
           className: styles$9.purpose,
-          children: jsx(NextLiner, {
+          children: jsxRuntime.jsx(NextLiner, {
             text: props.botData.ai_purpose
           })
-        }), jsx(SuggestQuery, {
+        }), jsxRuntime.jsx(SuggestQuery, {
           queries: props.suggestedQuery,
           sendMessage: props.sendMessage
-        }), jsx("div", {
+        }), jsxRuntime.jsx("div", {
           className: styles$9.chatArea,
-          children: jsx(BalloonWrapper, {
+          children: jsxRuntime.jsx(BalloonWrapper, {
             chats: props.chats,
             isMobile: props.isMobile,
             aiName: props.botData.ai_name,
@@ -28503,9 +28523,9 @@ var ChatBotTemplate = function ChatBotTemplate(props) {
           })
         })]
       })
-    }), jsxs("div", {
+    }), jsxRuntime.jsxs("div", {
       className: styles$9.bottom,
-      children: [jsx(ChatInput, {
+      children: [jsxRuntime.jsx(ChatInput, {
         value: props.chatText,
         onChange: function onChange(e) {
           return props.handleChatText(e.currentTarget.value);
@@ -28516,7 +28536,7 @@ var ChatBotTemplate = function ChatBotTemplate(props) {
         placeholder: "".concat(props.botData.ai_name, "\uC5D0 \uAD81\uAE08\uD558\uC2E0 \uC810\uC744 \uBB3C\uC5B4\uBCF4\uC138\uC694."),
         disabledSubmit: disabledSubmit,
         responding: props.responding
-      }), jsx("div", {
+      }), jsxRuntime.jsx("div", {
         className: styles$9.copyRight,
         children: "Powered by HUGRAPH co., Ltd."
       })]
@@ -29420,7 +29440,7 @@ Object.defineProperty(useWebsocket, "__esModule", {
   value: true
 });
 useWebsocket.useWebSocket = void 0;
-var react_1$2 = React__default$1;
+var react_1$2 = React$1;
 var react_dom_1 = require$$1;
 var constants_1$2 = constants;
 var create_or_join_1 = createOrJoin;
@@ -29603,7 +29623,7 @@ Object.defineProperty(useSocketIo, "__esModule", {
   value: true
 });
 useSocketIo.useSocketIO = void 0;
-var react_1$1 = React__default$1;
+var react_1$1 = React$1;
 var use_websocket_1$1 = useWebsocket;
 var constants_1$1 = constants;
 var emptyEvent = {
@@ -29683,7 +29703,7 @@ Object.defineProperty(useEventSource$1, "__esModule", {
   value: true
 });
 useEventSource$1.useEventSource = void 0;
-var react_1 = React__default$1;
+var react_1 = React$1;
 var use_websocket_1 = useWebsocket;
 var constants_1 = constants;
 var useEventSource = function useEventSource(url, _a, connect) {
@@ -30060,11 +30080,11 @@ var uaParser_minExports = uaParser_min.exports;
 Object.defineProperty(lib, '__esModule', {
   value: true
 });
-function _interopDefault(ex) {
+function _interopDefault$1(ex) {
   return ex && _typeof$1(ex) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
-var React = React__default$1;
-var React__default = _interopDefault(React);
+var React = React$1;
+var React__default = _interopDefault$1(React);
 var UAParser = uaParser_minExports;
 var ClientUAInstance = new UAParser();
 var browser = ClientUAInstance.getBrowser();
@@ -31095,37 +31115,37 @@ function v4(options, buf, offset) {
 }
 
 var _a;
-var MessageType;
+exports.MessageType = void 0;
 (function (MessageType) {
   MessageType["MY"] = "MY";
   MessageType["BOT"] = "BOT";
-})(MessageType || (MessageType = {}));
+})(exports.MessageType || (exports.MessageType = {}));
 var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0 ? _a : 'ws://dev-server:7060';
 (function () {
   var _this = this;
   var TGram = function TGram(props) {
-    var _a = useState(false),
+    var _a = React$1.useState(false),
       needForceReconnect = _a[0],
       setNeedForceReconnect = _a[1];
-    var _b = useState('T GRAM'),
+    var _b = React$1.useState('T GRAM'),
       chatModel = _b[0],
       setChatModel = _b[1];
-    var _c = useState(''),
+    var _c = React$1.useState(''),
       chatText = _c[0],
       setChatText = _c[1];
-    var _d = useState([]),
+    var _d = React$1.useState([]),
       chatHistoryBySessionId = _d[0];
       _d[1];
-    var _e = useState([]),
+    var _e = React$1.useState([]),
       chats = _e[0],
       setChats = _e[1];
-    var _f = useState([]),
+    var _f = React$1.useState([]),
       suggestedQueryByUserQuery = _f[0],
       setSuggestedQueryByUserQuery = _f[1];
-    var _g = useState([]),
+    var _g = React$1.useState([]),
       suggestedQuery = _g[0],
       setSuggestedQuery = _g[1];
-    var _h = useState({
+    var _h = React$1.useState({
         ai_greeting: '',
         ai_name: '',
         ai_purpose: '',
@@ -31136,7 +31156,7 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
     // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
     // const [ searchParams ] = useSearchParams();
     // const sessionId = searchParams.get('sessionId');
-    var getSocketUrl = useCallback(function () {
+    var getSocketUrl = React$1.useCallback(function () {
       return "".concat(BASE_URL, "/api/generator/rag/").concat(props.clientId, "?apikey=").concat(props.apiKey);
     }, [props.clientId, props.apiKey]);
     var _j = useWebSocket(getSocketUrl, {
@@ -31160,13 +31180,13 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
       }, needForceReconnect === false),
       sendJsonMessage = _j.sendJsonMessage,
       readyState = _j.readyState;
-    var handleChatModelChange = useCallback(function (chatModel) {
+    var handleChatModelChange = React$1.useCallback(function (chatModel) {
       setChatModel(chatModel);
     }, []);
     var generateCallId = function generateCallId() {
       return v4();
     };
-    var _sendMessage = useCallback(function (message) {
+    var _sendMessage = React$1.useCallback(function (message) {
       if (!message) {
         // TODO: 방어로직
         console.log('chat text가 없어서 종료.', message);
@@ -31175,7 +31195,7 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
       if (message.length > CHAT_INPUT_MAX_SIZE) ;
       var callId = generateCallId();
       var newChat = {
-        type: MessageType.MY,
+        type: exports.MessageType.MY,
         message: message,
         callId: callId
       };
@@ -31191,19 +31211,19 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
     var handleChatText = function handleChatText(chatText) {
       setChatText(chatText);
     };
-    var responding = useMemo(function () {
+    var responding = React$1.useMemo(function () {
       var lastChat = chats[chats.length - 1];
       return (lastChat === null || lastChat === void 0 ? void 0 : lastChat.terminated) === false;
     }, [chats]);
-    var lastMyChat = useMemo(function () {
+    var lastMyChat = React$1.useMemo(function () {
       var reversed = __spreadArray([], chats, true).reverse();
       return reversed.find(function (chat) {
-        return chat.type === MessageType.MY;
+        return chat.type === exports.MessageType.MY;
       });
     }, [chats]);
     var getBotMessageIndexByQuestionId = function getBotMessageIndexByQuestionId(callId) {
       return chats.findIndex(function (chat) {
-        return chat.type === MessageType.BOT && chat.callId === callId;
+        return chat.type === exports.MessageType.BOT && chat.callId === callId;
       });
     };
     var addBotMessage = function addBotMessage(chat) {
@@ -31211,7 +31231,7 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
         return;
       }
       var newChat = _assign(_assign({}, chat), {
-        type: MessageType.BOT
+        type: exports.MessageType.BOT
       });
       var indexTargetChat = getBotMessageIndexByQuestionId(chat.callId);
       if (indexTargetChat === -1) {
@@ -31231,7 +31251,7 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
         });
       }
     };
-    var updateSuggestedQueryByUserQuery = useCallback(function () {
+    var updateSuggestedQueryByUserQuery = React$1.useCallback(function () {
       if (!lastMyChat || !props.apiKey) {
         return;
       }
@@ -31254,11 +31274,11 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
         });
       })();
     }, [lastMyChat, props.apiKey]);
-    var resetChats = useCallback(function () {
+    var resetChats = React$1.useCallback(function () {
       setNeedForceReconnect(false);
       setChats([]);
     }, []);
-    var initialize = useCallback(function (clientId, apiKey) {
+    var initialize = React$1.useCallback(function (clientId, apiKey) {
       (function () {
         return __awaiter$1(_this, void 0, void 0, function () {
           var chatHistory, ragInitData;
@@ -31300,10 +31320,10 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
         });
       })();
     }, []);
-    useEffect(function () {
+    React$1.useEffect(function () {
       initialize(props.clientId, props.apiKey);
     }, []);
-    useEffect(function () {
+    React$1.useEffect(function () {
       updateSuggestedQueryByUserQuery();
     }, [lastMyChat === null || lastMyChat === void 0 ? void 0 : lastMyChat.message]);
     // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
@@ -31320,8 +31340,8 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
     //         setChatHistoryBySessionId(_chatHistoryBySessionId);
     //     })();
     // }, [ sessionId ]);
-    return jsx(KeyProvider, {
-      children: jsx(ChatBotTemplate, _assign({}, props, {
+    return jsxRuntime.jsx(KeyProvider, {
+      children: jsxRuntime.jsx(ChatBotTemplate, _assign({}, props, {
         chats: (chatHistoryBySessionId === null || chatHistoryBySessionId === void 0 ? void 0 : chatHistoryBySessionId.length) > 0 ? __spreadArray([], chatHistoryBySessionId, true).reverse() : chats,
         isMobile: isMobileOnly_1,
         sendMessage: _sendMessage,
@@ -31345,9 +31365,7 @@ var BASE_URL = (_a = process.env.REACT_APP_SOCKET_URL) !== null && _a !== void 0
     if (!container) {
       return;
     }
-    require$$1.render(jsx(TGram, _assign({}, options)), container);
+    require$$1.render(jsxRuntime.jsx(TGram, _assign({}, options)), container);
   };
 })();
-
-export { MessageType };
 //# sourceMappingURL=index.js.map
