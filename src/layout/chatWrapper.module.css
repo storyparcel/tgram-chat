@@ -1,0 +1,23 @@
+.wrapperDesktop {
+    position: relative;
+    box-sizing: border-box;
+    /* CHATBOT_WIDTH */
+    width: 500px;
+    /* CHATBOT_HEIGHT */
+    height: 800px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.wrapperMobile {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}

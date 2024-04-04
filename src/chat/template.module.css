@@ -1,0 +1,68 @@
+.layout {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-anchor: auto!important;
+    position: relative;
+    box-sizing: border-box;
+    /* - (HEADER_HEIGHT + CHAT_INPUT_AREA_HEIGHT) */
+    height: calc(100vh - 73px - 128px);
+    overflow-y: auto;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scrollInnerWrapper {
+    /* BREAK_POINT.tablet */
+    max-width: 768px;
+    padding: 88px 32px 50px 32px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.copyRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #9EA2A8;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    margin-top: 16px;
+}
+
+.greeting {
+    margin-top: 56px;
+    color: #30343C;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.purpose {
+    margin: 72px 0 32px 0;
+    color: #585C64;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.chatArea {
+    margin-top: 64px;
+}
+
+.bottom {
+    box-sizing: border-box;
+    /* BREAK_POINT.tablet */
+    max-width: 768px;
+    margin: 0 auto;
+    /* CHAT_INPUT_AREA_HEIGHT */
+    height: 128px;
+}

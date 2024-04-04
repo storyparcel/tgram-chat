@@ -1,0 +1,19 @@
+.layout {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    text-align: right;
+}
+
+.message {
+    display: inline-block;
+    border-radius: 12px 12px 0px 12px;
+    border: 2px solid #3B88FF;
+    background-color: #3B88FF;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: left;
+}
