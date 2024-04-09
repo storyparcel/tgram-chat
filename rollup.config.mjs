@@ -10,6 +10,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { DEFAULT_EXTENSIONS } from '@babel/core';
 import postcss from 'rollup-plugin-postcss';
+import terser from '@rollup/plugin-terser';
 
 const extensions = [...DEFAULT_EXTENSIONS, '.ts', '.tsx'];
 
@@ -19,7 +20,7 @@ export default [
         input: './src/index.ts',
         output: {
             file: './dist/index.js',
-            format: 'cjs',
+            format: 'iife',
             sourcemap: true,
         },
         plugins: [
@@ -43,6 +44,7 @@ export default [
             typescript({ tsconfig: './tsconfig.json' }),
             svg(),
             json(),
+            terser(),
         ],
         external: ["react", "react-dom"],
     },
