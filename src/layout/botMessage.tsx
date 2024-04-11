@@ -1,14 +1,13 @@
 import React, { useMemo, useRef } from 'react';
-import ClipboardImg from '../assets/icons/clipboard-icon.svg';
-import ShareImg from '../assets/icons/share-icon.svg';
-import styles from './botMessage.module.css';
-import repository from 'src/repository';
-import { Chat } from 'src/chat';
+import * as styles from './botMessage.module.css';
 import Loading from '../components/loading';
 import UrlBlock from '../blocks/urlBlock';
 import MarkdownRenderer from '../components/markdownRenderer';
 import SearchingBlock from '../blocks/searchingBlock';
-import { useKeyContext } from 'src/contexts/keyContext';
+import { Chat } from '@src/chat';
+import { useKeyContext } from '@src/contexts/keyContext';
+import repository from '@src/repository';
+import { ASSETS } from '@src/constants';
 
 interface IBotMessage {
     chat: Chat;
@@ -87,7 +86,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                                     onClick={copyAnswer}
                                 >
                                     <img
-                                        src={ClipboardImg}
+                                        src={ASSETS['clipboard-icon']}
                                         width={20}
                                         height={20}
                                         alt='clipboard'
@@ -95,7 +94,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                                 </button>
                                 <button className={styles.utilButton}>
                                     <img
-                                        src={ShareImg}
+                                        src={ASSETS['share-icon']}
                                         width={20}
                                         height={20}
                                         alt='share'

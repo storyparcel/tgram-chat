@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './chatWrapper.module.css';
+import * as styles from './chatWrapper.module.css';
 
 interface IChatWrapper {
     isMobile: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { SuggestedQuery } from "src/chat";
-import styles from './suggestQuery.module.css';
+import * as styles from './suggestQuery.module.css';
+import { SuggestedQuery } from '@src/chat';
 
 interface ISuggestQuery {
     queries: Array<SuggestedQuery>;

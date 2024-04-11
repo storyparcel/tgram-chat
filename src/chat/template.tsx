@@ -1,11 +1,11 @@
 import React, { useMemo, useRef } from "react";
 import { BotData, Chat, ChatModelType, SuggestedQuery } from ".";
-import styles from './template.module.css';
-import NextLiner from "src/components/nextLiner";
-import SuggestQuery from "src/components/suggestQuery";
-import ChatModelSelector from "src/components/chatModelSelector";
+import * as styles from './template.module.css';
 import BalloonWrapper from '../layout/balloonWrapper';
-import ChatInput from "src/layout/chatInput";
+import ChatModelSelector from "@src/components/chatModelSelector";
+import NextLiner from "@src/components/nextLiner";
+import SuggestQuery from "@src/components/suggestQuery";
+import ChatInput from "@src/layout/chatInput";
 
 interface IChatBotTemplate {
     isMobile: boolean;

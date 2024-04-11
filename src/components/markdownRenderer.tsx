@@ -1,7 +1,7 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import styles from './markdownRenderer.module.css';
+import * as styles from './markdownRenderer.module.css';
 
 interface IMarkdownRenderer {
     markdown: string;

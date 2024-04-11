@@ -1,9 +1,7 @@
 import React, { InputHTMLAttributes, useCallback, useRef } from 'react';
-import SendInActiveImg from '../assets/icons/send-inactive-icon.svg';
-import SendActiveImg from '../assets/icons/send-active-icon.svg';
 import TextareaAutosize from 'react-textarea-autosize';
-import styles from './chatInput.module.css';
-import { CHAT_INPUT_MAX_ROWS, CHAT_INPUT_MAX_SIZE } from '../constants';
+import * as styles from './chatInput.module.css';
+import { ASSETS, CHAT_INPUT_MAX_ROWS, CHAT_INPUT_MAX_SIZE } from '../constants';
 import Loading from '../components/loading';
 
 interface IChatInput extends InputHTMLAttributes<HTMLTextAreaElement> {
@@ -59,7 +57,7 @@ const ChatInput: React.FC<IChatInput> = (props) => {
                         disabled={props.disabledSubmit}
                     >
                         <img
-                            src={props.disabledSubmit ? SendInActiveImg : SendActiveImg}
+                            src={props.disabledSubmit ? ASSETS['send-inactive-icon'] : ASSETS['send-active-icon']}
                             width={20}
                             height={20}
                             alt='send'

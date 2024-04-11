@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './myMessage.module.css';
+import * as styles from './myMessage.module.css';
 
 interface IMyMessage {
     message: string;

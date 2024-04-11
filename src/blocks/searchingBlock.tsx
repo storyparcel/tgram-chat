@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './searchingBlock.module.css';
+import * as styles from './searchingBlock.module.css';
 
 interface ISearchingBlock {
     message: string;

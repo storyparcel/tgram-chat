@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './suggestQueryByUserQuery.module.css'
-import MoreDotImg from '../assets/icons/more-options-icon.svg';
+import * as styles from './suggestQueryByUserQuery.module.css'
+import { ASSETS } from '@src/constants';
 
 interface ISuggestedQueryByUserQuery {
     queries: Array<string>;
@@ -13,7 +13,7 @@ const SuggestedQueryByUserQuery: React.FC<ISuggestedQueryByUserQuery> = (props) 
             <div className={styles.titleWrapper}>
                 <div className={styles.titleIconWrapper}>
                     <img
-                        src={MoreDotImg}
+                        src={ASSETS['more-options-icon']}
                         alt='suggest-icon'
                         width={16}
                         height={16}

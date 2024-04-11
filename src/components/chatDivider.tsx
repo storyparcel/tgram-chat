@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './chatDivider.module.css';
+import * as styles from './chatDivider.module.css';
 
 const ChatDivider: React.FC = () => {
     return (

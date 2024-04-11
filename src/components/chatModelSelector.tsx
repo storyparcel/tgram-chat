@@ -1,7 +1,7 @@
 import React from 'react';
-import { CHAT_MODEL_LOGOS } from 'src/constants';
-import styles from './chatModelSelector.module.css'
+import * as styles from './chatModelSelector.module.css'
 import { useCallback } from 'react';
+import { CHAT_MODEL_LOGOS } from '@src/constants';
 
 export type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 

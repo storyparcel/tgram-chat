@@ -1,9 +1,9 @@
-import React, { useCallback, useMemo } from "react";
-import { Chat, MessageType } from "src/chat";
+import React, { useCallback, useMemo } from "react";;
 import MyMessage from "./myMessage";
 import BotMessage from "./botMessage";
-import styles from './botMessage.module.css';
+import * as styles from './botMessage.module.css';
 import SuggestedQueryByUserQuery from '../components/suggestedQueryByUserQuery';
+import { Chat, MessageType } from "@src/chat";
 
 interface IBalloonWrapper {
     chats: Array<Chat>;

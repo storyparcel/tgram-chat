@@ -49,3 +49,11 @@ export const CHAT_MODEL_LOGOS = {
     'GPT 3.5': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/icon_gpt3.5.svg',
     'GPT 4': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/icon_gpt4.svg',
 };
+
+export const ASSETS = {
+    'send-active-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/send-active-icon.svg',
+    'send-inactive-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/send-inactive-icon.svg',
+    'share-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/share-icon.svg',
+    'clipboard-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/clipboard-icon.svg',
+    'more-options-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/more-options-icon.svg',
+};
