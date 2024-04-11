@@ -1,3 +1,5 @@
+import React from 'react';
+
 const NextLiner = ({ text }: { text: string }) => {
     return (
         <div>

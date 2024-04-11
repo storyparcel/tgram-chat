@@ -35,4 +35,10 @@ export type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 export type Chat = {
     type: MessageType;
 } & BaseChat;
+declare const initMyChatbot: (options: {
+    clientId: string;
+    apiKey: string;
+    containerId: string;
+}) => void;
+export { initMyChatbot, };
 //# sourceMappingURL=index.d.ts.map

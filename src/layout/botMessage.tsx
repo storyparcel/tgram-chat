@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import ClipboardImg from '../assets/icons/clipboard-icon.svg';
 import ShareImg from '../assets/icons/share-icon.svg';
 import styles from './botMessage.module.css';

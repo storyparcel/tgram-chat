@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 interface ISuggestedQueryByUserQuery {
     queries: Array<string>;
     sendMessage: (message: string) => void;

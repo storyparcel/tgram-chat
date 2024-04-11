@@ -1,12 +1,10 @@
 import babel from '@rollup/plugin-babel';
 import typescript from '@rollup/plugin-typescript';
-// import typescript from 'rollup-plugin-typescript2';
 import { dts } from 'rollup-plugin-dts';
 import svg from 'rollup-plugin-svg';
 import json from '@rollup/plugin-json';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-// import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { DEFAULT_EXTENSIONS } from '@babel/core';
 import postcss from 'rollup-plugin-postcss';
@@ -21,9 +19,12 @@ export default [
         output: {
             file: './dist/index.js',
             format: 'iife',
+            extend: true,
+            name: 'tgramChat',
             sourcemap: true,
         },
         plugins: [
+            commonjs(), // CommonJS 모듈을 ES6 모듈로 변환
             peerDepsExternal(),
             nodeResolve({ extensions }),
             postcss({
@@ -31,22 +32,22 @@ export default [
                 modules: true,
                 use: ['sass'],
             }),
-            commonjs(),
             babel({
                 babelHelpers: 'bundled',
                 presets: [
                     '@babel/preset-env',
-                    '@babel/preset-react',
+                    ['@babel/preset-react', { "runtime": "automatic" }],
                     '@babel/preset-typescript',
                 ],
+                plugins: ['@babel/plugin-transform-react-jsx'],
                 extensions,
             }),
             typescript({ tsconfig: './tsconfig.json' }),
             svg(),
             json(),
-            terser(),
+            // terser(),
         ],
-        external: ["react", "react-dom"],
+        // external: ["react", "react-dom"],
     },
     {
         input: './dist/types/index.d.ts',

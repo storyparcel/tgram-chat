@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 interface IChatInput extends InputHTMLAttributes<HTMLTextAreaElement> {
     sendMessage: () => void;
     responding: boolean;

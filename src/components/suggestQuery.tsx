@@ -1,3 +1,4 @@
+import React from 'react';
 import { SuggestedQuery } from "src/chat";
 import styles from './suggestQuery.module.css';
 

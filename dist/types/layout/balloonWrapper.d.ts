@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from "react";
 import { Chat } from "src/chat";
 interface IBalloonWrapper {
     chats: Array<Chat>;

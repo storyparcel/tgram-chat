@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './markdownRenderer.module.css';
@@ -8,7 +8,7 @@ interface IMarkdownRenderer {
     onClickLink?: (href?: string) => Promise<void>;
 }
 
-const MarkdownRenderer = forwardRef<HTMLDivElement, IMarkdownRenderer>((props, ref) => {
+const MarkdownRenderer = React.forwardRef<HTMLDivElement, IMarkdownRenderer>((props, ref) => {
     return (
         <div className={styles.wrapper}>
             <div ref={ref}>

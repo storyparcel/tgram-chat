@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { BotData, Chat, ChatModelType, SuggestedQuery } from ".";
 import styles from './template.module.css';
 import NextLiner from "src/components/nextLiner";

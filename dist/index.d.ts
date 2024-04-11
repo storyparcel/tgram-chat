@@ -35,5 +35,10 @@ type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 type Chat = {
     type: MessageType;
 } & BaseChat;
+declare const initMyChatbot: (options: {
+    clientId: string;
+    apiKey: string;
+    containerId: string;
+}) => void;
 
-export { type BaseChat, type BotData, type Chat, type ChatData, type ChatModelType, type ChatUrl, MessageType, type SuggestedQuery };
+export { type BaseChat, type BotData, type Chat, type ChatData, type ChatModelType, type ChatUrl, MessageType, type SuggestedQuery, initMyChatbot };

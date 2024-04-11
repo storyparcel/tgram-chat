@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { SuggestedQuery } from "src/chat";
 interface ISuggestQuery {
     queries: Array<SuggestedQuery>;

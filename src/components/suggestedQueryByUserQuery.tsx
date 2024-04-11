@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './suggestQueryByUserQuery.module.css'
 import MoreDotImg from '../assets/icons/more-options-icon.svg';
 

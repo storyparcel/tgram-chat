@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from "react";
 import { BotData, Chat, ChatModelType, SuggestedQuery } from ".";
 interface IChatBotTemplate {
     isMobile: boolean;

@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 export type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 interface IChatModelSelector {
     chatModel: ChatModelType;

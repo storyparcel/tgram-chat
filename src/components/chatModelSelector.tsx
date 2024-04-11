@@ -1,3 +1,4 @@
+import React from 'react';
 import { CHAT_MODEL_LOGOS } from 'src/constants';
 import styles from './chatModelSelector.module.css'
 import { useCallback } from 'react';

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useCallback, useRef } from 'react';
+import React, { InputHTMLAttributes, useCallback, useRef } from 'react';
 import SendInActiveImg from '../assets/icons/send-inactive-icon.svg';
 import SendActiveImg from '../assets/icons/send-active-icon.svg';
 import TextareaAutosize from 'react-textarea-autosize';

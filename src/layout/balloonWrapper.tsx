@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Chat, MessageType } from "src/chat";
 import MyMessage from "./myMessage";
 import BotMessage from "./botMessage";
