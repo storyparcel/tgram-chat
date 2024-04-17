@@ -5,7 +5,7 @@ const COMMON_HEADERS = {
     Expires: '0',
 };
 
-const fetchWithCommonOptions = async (url, options) => {
+const fetchWithCommonOptions = async (url: string, options: any) => {
     const mergedOptions = {
         ...options,
         headers: {
