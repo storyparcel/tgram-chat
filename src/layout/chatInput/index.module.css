@@ -1,0 +1,52 @@
+.layout {
+    position: relative;
+}
+
+.textArea {
+    box-sizing: border-box;
+    background-color: var(--white-base);
+    line-height: 20px;
+    color: var(--gray-80);
+    padding: 22px 24px;
+    width: 100%;
+    border: 1px solid var(--gray-20);
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+    font-size: 14px;
+    font-weight: 600;
+    resize: none;
+}
+
+.textArea:focus {
+    outline: none;
+    border-color: var(--primary-base);
+}
+
+.textArea::placeholder {
+    color: var(--gray-40);
+    font-weight: 400;
+}
+
+.submitButton {
+    position: absolute;
+    top: 11px;
+    right: 12px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.submitButton:active {
+    filter: brightness(85%);
+}
+
+.loadingWrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

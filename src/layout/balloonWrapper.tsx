@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from "react";;
 import MyMessage from "./myMessage";
 import BotMessage from "./botMessage";
-import * as styles from './botMessage.module.css';
 import SuggestedQueryByUserQuery from '../components/suggestedQueryByUserQuery';
 import { Chat, MessageType } from "@src/chat";
 
@@ -41,7 +40,7 @@ const BalloonWrapper: React.FC<IBalloonWrapper> = (props) => {
 
     return (
         <>
-            <div className={styles.wrapper}>
+            <div>
                 { props.chats.map((chat, i) => {
                     return (
                         <div

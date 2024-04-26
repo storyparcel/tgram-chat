@@ -1,0 +1,23 @@
+.layout {
+    margin-top: 12px;
+}
+
+.urlWrapper {
+    margin-bottom: 12px;
+    border: solid 1.5px var(--primary-base);
+    border-radius: 12px;
+    background-color: var(--white-base);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.urlWrapper:last-child {
+    margin-bottom: 0;
+}
+
+.thumbnailWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+}

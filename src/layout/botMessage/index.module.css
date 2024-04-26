@@ -1,0 +1,50 @@
+.layout {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+}
+
+.botProfile {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: var(--gray-80);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.message {
+    padding: 24px;
+    background-color: #F5FBFF;
+    color: var(--gray-80);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+.loadingWrapper {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+}
+
+.utilButtonWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    margin: 16px 0 0 -4px;
+}
+
+.utilButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+}
