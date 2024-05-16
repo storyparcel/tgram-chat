@@ -3,6 +3,7 @@ import MyMessage from "./myMessage";
 import BotMessage from "./botMessage";
 import SuggestedQueryByUserQuery from '../components/suggestedQueryByUserQuery';
 import { Chat, MessageType } from "@src/contexts/chatContext";
+import { IFeedbackPayload } from "@src/repository";
 
 interface IBalloonWrapper {
     chats: Array<Chat>;
@@ -12,6 +13,7 @@ interface IBalloonWrapper {
     suggestedQueryByUserQuery: Array<string>;
     responding: boolean;
     sendMessage: (message: string) => void;
+    feedback: (payload: IFeedbackPayload) => Promise<any>;
 };
 
 const BalloonWrapper: React.FC<IBalloonWrapper> = (props) => {
@@ -27,6 +29,7 @@ const BalloonWrapper: React.FC<IBalloonWrapper> = (props) => {
                         chat={chat}
                         aiName={props.aiName}
                         aiThumbnail={props.aiThumbnail}
+                        feedback={props.feedback}
                     />
                 );
             default:

@@ -5,7 +5,7 @@ import UrlBlock from '../../blocks/urlBlock';
 import MarkdownRenderer from '../../components/markdownRenderer';
 import SearchingBlock from '../../blocks/searchingBlock';
 import { useKeyContext } from '@src/contexts/keyContext';
-import repository from '@src/repository';
+import repository, { IFeedbackPayload } from '@src/repository';
 import { ASSETS } from '@src/constants';
 import OpinionBox, { OpinionType } from '@src/components/opinionBox';
 import { Chat } from '@src/contexts/chatContext';
@@ -14,6 +14,7 @@ interface IBotMessage {
     chat: Chat;
     aiName: string;
     aiThumbnail: string;
+    feedback: (payload: IFeedbackPayload) => Promise<any>;
 }
 
 const BotMessage: React.FC<IBotMessage> = (props) => {
@@ -34,14 +35,28 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
         setCurrentOpinion(null);
     }, []);
 
-    const handleSubmitOpinion = useCallback((comment: string) => {
-        window.alert(JSON.stringify({
-            sessionId: props.chat.data?.session_id,
-            callId: props.chat.callId,
-            like: currentOpinion === 'like',
+    const feedback = useCallback(async (like: boolean, comment: string) => {
+        // NOTE: 핸들링 필요
+        if (!props.chat.data?.session_id) {
+            return;
+        }
+
+        const payload: IFeedbackPayload = {
+            call_id: props.chat.callId,
+            session_id: props.chat.data.session_id,
+            like,
             comment,
-        }, null, 2))
-    }, [ props.chat, currentOpinion ]);
+        };
+
+        await props.feedback(payload);
+    }, [ props.feedback, props.chat ]);
+
+    const handleSubmitOpinion = useCallback(async (comment: string) => {
+        await feedback(
+            currentOpinion === 'like',
+            comment,
+        );
+    }, [ props.chat, currentOpinion, feedback ]);
 
     const onClickLink = async (href: string | undefined) => {
         if (!href || !apiKey || !clientId || !props.chat.data?.session_id) {

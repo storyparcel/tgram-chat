@@ -1,5 +1,6 @@
 const COMMON_HEADERS = {
     'Cache-Control': 'no-cache',
+    'Content-Type': 'application/json',
     Pragma: 'no-cache',
     Expires: '0',
 };

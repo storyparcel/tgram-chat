@@ -13,6 +13,13 @@ export interface ILoginResult {
     token_type: string;
 }
 
+export interface IFeedbackPayload {
+    session_id: string;
+    call_id: string;
+    like: boolean;
+    comment: string;
+}
+
 class Repository {
     url = '';
 
@@ -96,6 +103,29 @@ class Repository {
             const queryString = objectToQueryString(payload);
             const response = await fetchWithCommonOptions(`/api/chat/record_click?${queryString}`, {
                 method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            return response.json();
+        } catch (err) {
+        }
+    };
+
+    async feedback(payload: IFeedbackPayload, token: string | null): Promise<any> {
+        try {
+            if (!token) {
+                throw new Error('not authorized.');
+            }
+
+            const response = await fetchWithCommonOptions(`/api/chat/feedback`, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) {

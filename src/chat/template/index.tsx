@@ -2,11 +2,12 @@ import React, { useMemo, useRef } from "react";
 import { BotData, ChatModelType, SuggestedQuery } from "..";
 import * as styles from './index.module.css';
 import BalloonWrapper from '../../layout/balloonWrapper';
-import ChatModelSelector from "@src/components/chatModelSelector";
+// import ChatModelSelector from "@src/components/chatModelSelector";
 import NextLiner from "@src/components/nextLiner";
 import SuggestQuery from "@src/components/suggestQuery";
 import ChatInput from "@src/layout/chatInput";
 import { Chat } from "@src/contexts/chatContext";
+import { IFeedbackPayload } from "@src/repository";
 
 interface IChatBotTemplate {
     isMobile: boolean;
@@ -24,6 +25,7 @@ interface IChatBotTemplate {
     sendMessage: (message: string) => void;
     resetConnect: () => void;
     handleChatModelChange: (chatModel: ChatModelType) => void;
+    feedback: (payload: IFeedbackPayload) => Promise<any>;
 }
 
 const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
@@ -69,7 +71,7 @@ const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
                             suggestedQueryByUserQuery={props.suggestedQueryByUserQuery}
                             responding={props.responding}
                             sendMessage={props.sendMessage}
-
+                            feedback={props.feedback}
                         />
                     </div>
                 </div>

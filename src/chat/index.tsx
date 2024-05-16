@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
 import { KeyProvider } from '@src/contexts/keyContext';
 import { BaseChat, Chat, ChatProvider, MessageType, useChatContext } from '@src/contexts/chatContext';
 import './global.css';
+import repository, { IFeedbackPayload } from '@src/repository';
+import { TokenProvider, useTokenContext } from '@src/contexts/tokenContext';
 
 export type SuggestedQuery = {
     query: string;
@@ -43,6 +45,8 @@ interface ITgramOptions {
             ai_thumbnail: '',
         });
 
+        const { token } = useTokenContext();
+
         const {
             chats,
             addChat,
@@ -56,8 +60,8 @@ interface ITgramOptions {
         // const sessionId = searchParams.get('sessionId');
 
         const getSocketUrl = useCallback(() => {
-            return `${process.env.SOCKET_URL}/api/generator/rag/user?token=${props.token}`;
-        }, [ props.token ]);
+            return `${process.env.SOCKET_URL}/api/generator/rag/user?token=${token}`;
+        }, [token]);
 
         // const getSocketUrl = useCallback(() => {
         //     return `${process.env.SOCKET_URL}/api/generator/rag/user1?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiaWJraSIsImV4cCI6NDg1Mjk0MjE4MH0.hGExnQYw17NnMKl42ychcoVDx0cENFh4KJ4rLc2Sp3o`;
@@ -124,6 +128,11 @@ interface ITgramOptions {
         const handleChatText = useCallback((chatText: string) => {
             setChatText(chatText);
         }, []);
+
+        const feedback = useCallback(async (payload: IFeedbackPayload) => {
+            const res = await repository.feedback(payload, token);
+            window.alert(JSON.stringify(res, null, 2));
+        }, [ token ]);
 
         const responding = useMemo(() => {
             const lastChat = chats[chats.length - 1];
@@ -240,31 +249,28 @@ interface ITgramOptions {
         //     })();
         // }, [ sessionId ]);
 
-        if (!props.token) {
+        if (!token) {
             return null;
         }
 
         return (
-            <ChatProvider>
-                <KeyProvider>
-                    <ChatBotTemplate
-                        {...props}
-                        chats={chatHistoryBySessionId?.length > 0 ? [...chatHistoryBySessionId].reverse() : chats}
-                        isMobile={isMobileOnly}
-                        sendMessage={_sendMessage}
-                        isReady={readyState === ReadyState.OPEN}
-                        responding={responding}
-                        resetConnect={resetChats}
-                        chatModel={chatModel}
-                        handleChatModelChange={handleChatModelChange}
-                        botData={botData}
-                        suggestedQuery={suggestedQuery}
-                        suggestedQueryByUserQuery={suggestedQueryByUserQuery}
-                        chatText={chatText}
-                        handleChatText={handleChatText}
-                    />
-                </KeyProvider>
-            </ChatProvider>
+            <ChatBotTemplate
+                {...props}
+                chats={chatHistoryBySessionId?.length > 0 ? [...chatHistoryBySessionId].reverse() : chats}
+                isMobile={isMobileOnly}
+                sendMessage={_sendMessage}
+                isReady={readyState === ReadyState.OPEN}
+                responding={responding}
+                resetConnect={resetChats}
+                chatModel={chatModel}
+                handleChatModelChange={handleChatModelChange}
+                botData={botData}
+                suggestedQuery={suggestedQuery}
+                suggestedQueryByUserQuery={suggestedQueryByUserQuery}
+                chatText={chatText}
+                handleChatText={handleChatText}
+                feedback={feedback}
+            />
         );
     };
 
@@ -276,7 +282,9 @@ interface ITgramOptions {
         ReactDOM.render(
             <ChatProvider>
                 <KeyProvider>
-                    <TGram {...options} />,
+                    <TokenProvider initialToken={options.token}>
+                        <TGram {...options} />,
+                    </TokenProvider>
                 </KeyProvider>
             </ChatProvider>,
             container,
