@@ -5,30 +5,9 @@ import { CHAT_INPUT_MAX_SIZE } from '../constants';
 import { isMobileOnly } from 'react-device-detect';
 import { v4 as uuidv4 } from 'uuid';
 import ReactDOM from 'react-dom';
-import repository from '@src/repository';
 import { KeyProvider } from '@src/contexts/keyContext';
-
-export type ChatUrl = {
-    url: string;
-    thumbnail: string | null;
-    title: string;
-};
-
-export type ChatData = {
-    urls?: Array<ChatUrl>;
-    tool_calls?: Array<{
-        action: 'Search';
-        action_message: string;
-    }>;
-    session_id?: string;
-} | null;
-
-export type BaseChat = {
-    message: string;
-    callId: string;
-    data?: ChatData;
-    terminated?: boolean;
-};
+import { BaseChat, Chat, ChatProvider, MessageType, useChatContext } from '@src/contexts/chatContext';
+import './global.css';
 
 export type SuggestedQuery = {
     query: string;
@@ -42,49 +21,47 @@ export type BotData = {
     ai_thumbnail: string;
 };
 
-export enum MessageType {
-    MY = 'MY',
-    BOT = 'BOT',
-};
-
 export type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 
-export type Chat = { type: MessageType } & BaseChat;
-
-// const BASE_URL = process.env.REACT_APP_SOCKET_URL ?? 'ws://dev-server:7060';
-// TODO:
-const BASE_URL = 'ws://dev-server:7060';
-
-interface ITgram {
-    clientId: string;
-    apiKey: string;
+interface ITgramOptions {
+    token: string;
     containerId: string;
 }
 
-
 (() => {
-    const TGram = (props: ITgram) => {
-        const [ needForceReconnect, setNeedForceReconnect ] = useState<boolean>(false);
-        const [ chatModel, setChatModel ] = useState<ChatModelType>('T GRAM');
-        const [ chatText, setChatText ] = useState<string>('');
-        const [ chatHistoryBySessionId, setChatHistoryBySessionId ] = useState<Array<Chat>>([]);
-        const [ chats, setChats ] = useState<Array<Chat>>([]);
-        const [ suggestedQueryByUserQuery, setSuggestedQueryByUserQuery ] = useState<Array<string>>([]);
-        const [ suggestedQuery, setSuggestedQuery ] = useState<Array<SuggestedQuery>>([]);
-        const [ botData, setBotData ] = useState<BotData>({
+    const TGram = (props: ITgramOptions) => {
+        const [needForceReconnect, setNeedForceReconnect] = useState<boolean>(false);
+        const [chatModel, setChatModel] = useState<ChatModelType>('T GRAM');
+        const [chatText, setChatText] = useState<string>('');
+        const [chatHistoryBySessionId, setChatHistoryBySessionId] = useState<Array<Chat>>([]);
+        const [suggestedQueryByUserQuery, setSuggestedQueryByUserQuery] = useState<Array<string>>([]);
+        const [suggestedQuery, setSuggestedQuery] = useState<Array<SuggestedQuery>>([]);
+        const [botData, setBotData] = useState<BotData>({
             ai_greeting: '',
             ai_name: '',
             ai_purpose: '',
             ai_thumbnail: '',
         });
 
+        const {
+            chats,
+            addChat,
+            updateChat,
+            clearChats,
+            getBotMessageIndexByQuestionId,
+        } = useChatContext();
+
         // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
         // const [ searchParams ] = useSearchParams();
         // const sessionId = searchParams.get('sessionId');
 
         const getSocketUrl = useCallback(() => {
-            return `${BASE_URL}/api/generator/rag/${props.clientId}?apikey=${props.apiKey}`;
-        }, [ props.clientId, props.apiKey ]);
+            return `${process.env.SOCKET_URL}/api/generator/rag/user?token=${props.token}`;
+        }, [ props.token ]);
+
+        // const getSocketUrl = useCallback(() => {
+        //     return `${process.env.SOCKET_URL}/api/generator/rag/user1?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiaWJraSIsImV4cCI6NDg1Mjk0MjE4MH0.hGExnQYw17NnMKl42ychcoVDx0cENFh4KJ4rLc2Sp3o`;
+        // }, []);
 
         const {
             sendJsonMessage,
@@ -117,9 +94,9 @@ interface ITgram {
             setChatModel(chatModel);
         }, []);
 
-        const generateCallId = () => {
+        const generateCallId = useCallback(() => {
             return uuidv4();
-        };
+        }, []);
 
         const _sendMessage = useCallback((message: string) => {
             if (!message) {
@@ -140,34 +117,25 @@ interface ITgram {
                 message: newChat.message,
                 callId: newChat.callId,
             });
-            setChats(prevChats => [...prevChats, newChat]);
+            addChat(newChat);
             setChatText('');
         }, []);
 
-        const handleChatText = (chatText: string) => {
+        const handleChatText = useCallback((chatText: string) => {
             setChatText(chatText);
-        };
+        }, []);
 
         const responding = useMemo(() => {
             const lastChat = chats[chats.length - 1];
             return lastChat?.terminated === false;
-        }, [ chats ]);
+        }, [chats]);
 
         const lastMyChat = useMemo(() => {
             const reversed = [...chats].reverse();
             return reversed.find(chat => chat.type === MessageType.MY);
-        }, [ chats ]);
+        }, [chats]);
 
-        const getBotMessageIndexByQuestionId = (callId: string) => {
-            return chats.findIndex(chat => {
-                return (
-                    chat.type === MessageType.BOT &&
-                    chat.callId === callId
-                );
-            });
-        };
-
-        const addBotMessage = (chat: BaseChat) => {
+        const addBotMessage = useCallback((chat: BaseChat) => {
             if (!chat) {
                 return;
             }
@@ -178,87 +146,83 @@ interface ITgram {
             };
             const indexTargetChat = getBotMessageIndexByQuestionId(chat.callId);
             if (indexTargetChat === -1) {
-                setChats(prevChats => [...prevChats, newChat]);
+                addChat(newChat);
             } else {
-                setChats(prevChats => {
-                    const targetChat = prevChats[indexTargetChat];
-                    prevChats[indexTargetChat] = {
-                        ...targetChat,
-                        message: targetChat.message.concat(newChat.message),
-                        data: newChat.data ?? targetChat.data,
-                        terminated: newChat.terminated,
-                    };
-                    return [...prevChats];
-                });
+                updateChat(newChat);
             }
-        };
+        }, [getBotMessageIndexByQuestionId]);
 
         const updateSuggestedQueryByUserQuery = useCallback(() => {
-            if (!lastMyChat || !props.apiKey) {
-                return;
-            }
+            // TODO: apiKey 방식이 아니여서..
+            // if (!lastMyChat || !props.apiKey) {
+            //     return;
+            // }
 
-            (async () => {
-                const _suggestedQueryByUserQuery = await repository.getNewSuggestedQuery({
-                    api_key: props.apiKey,
-                    user_query: lastMyChat.message,
-                });
-                setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
-            })();
-        }, [ lastMyChat, props.apiKey ]);
+            // (async () => {
+            //     const _suggestedQueryByUserQuery = await repository.getNewSuggestedQuery({
+            //         api_key: props.apiKey,
+            //         user_query: lastMyChat.message,
+            //     });
+            //     setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
+            // })();
+        }, [lastMyChat]);
 
         const resetChats = useCallback(() => {
             setNeedForceReconnect(false);
-            setChats([]);
+            clearChats();
         }, []);
 
-        const initialize = useCallback((
-            clientId: string,
-            apiKey: string,
-            // startDate: string,
-            // endDate: string,
-        ) => {
-            (async () => {
-                // TODO: header token이 있어야 응답이 오는 구조여서 일단 빈배열임.
-                const chatHistory = await repository.loadChatHistory({
-                    client_id: clientId,
-                    size: 30,
-                });
-                console.log('tgram chatHistory', chatHistory);
-                const ragInitData = await repository.ragInit({ api_key: apiKey });
-                console.log('tgram ragInitData', ragInitData);
-                // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
-                // await this.getUserSessionHistory(
-                //     clientId,
-                //     apiKey,
-                //     startDate,
-                //     endDate,
-                // );
 
-                setSuggestedQuery(ragInitData.suggested_query);
-                setBotData({
-                    ai_greeting: ragInitData.ai_greeting,
-                    ai_name: ragInitData.ai_name,
-                    ai_purpose: ragInitData.ai_purpose,
-                    ai_thumbnail: ragInitData.ai_thumbnail,
-                });
-                setChats(chatHistory.reverse());
-                resetChats();
-            })();
-        }, []);
+        // TODO: apiKey 방식이 아니여서...
+        //////////////////////////////////////////////////////////////////////////////////////
+        // const initialize = useCallback((
+        //     clientId: string,
+        //     apiKey: string,
+        //     // startDate: string,
+        //     // endDate: string,
+        // ) => {
+        //     (async () => {
+        //         // TODO: header token이 있어야 응답이 오는 구조여서 일단 빈배열임.
+        //         const chatHistory = await repository.loadChatHistory({
+        //             client_id: clientId,
+        //             size: 30,
+        //         });
+        //         console.log('tgram chatHistory', chatHistory);
+        //         const ragInitData = await repository.ragInit({ api_key: apiKey });
+        //         console.log('tgram ragInitData', ragInitData);
+        //         // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
+        //         // await this.getUserSessionHistory(
+        //         //     clientId,
+        //         //     apiKey,
+        //         //     startDate,
+        //         //     endDate,
+        //         // );
 
-        useEffect(() => {
-            initialize(
-                props.clientId,
-                props.apiKey,
-                // filterDateStore.formattedDate.startDate,
-                // filterDateStore.formattedDate.endDate,
-            );
-        }, []);
+        //         setSuggestedQuery(ragInitData.suggested_query);
+        //         setBotData({
+        //             ai_greeting: ragInitData.ai_greeting,
+        //             ai_name: ragInitData.ai_name,
+        //             ai_purpose: ragInitData.ai_purpose,
+        //             ai_thumbnail: ragInitData.ai_thumbnail,
+        //         });
+        //         setChats(chatHistory.reverse());
+        //         resetChats();
+        //     })();
+        // }, []);
+
+        // useEffect(() => {
+        //     initialize(
+        //         props.clientId,
+        //         props.apiKey,
+        //         // filterDateStore.formattedDate.startDate,
+        //         // filterDateStore.formattedDate.endDate,
+        //     );
+        // }, []);
+        //////////////////////////////////////////////////////////////////////////////////////
 
         useEffect(() => {
             updateSuggestedQueryByUserQuery();
-        }, [ lastMyChat?.message ]);
+        }, [lastMyChat?.message]);
 
         // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
         // useEffect(() => {
@@ -276,52 +240,49 @@ interface ITgram {
         //     })();
         // }, [ sessionId ]);
 
+        if (!props.token) {
+            return null;
+        }
+
         return (
-            <KeyProvider>
-                <ChatBotTemplate
-                    {...props}
-                    chats={chatHistoryBySessionId?.length > 0 ? [...chatHistoryBySessionId].reverse() : chats}
-                    isMobile={isMobileOnly}
-                    sendMessage={_sendMessage}
-                    isReady={readyState === ReadyState.OPEN}
-                    responding={responding}
-                    resetConnect={resetChats}
-                    chatModel={chatModel}
-                    handleChatModelChange={handleChatModelChange}
-                    botData={botData}
-                    suggestedQuery={suggestedQuery}
-                    suggestedQueryByUserQuery={suggestedQueryByUserQuery}
-                    chatText={chatText}
-                    handleChatText={handleChatText}
-                />
-            </KeyProvider>
+            <ChatProvider>
+                <KeyProvider>
+                    <ChatBotTemplate
+                        {...props}
+                        chats={chatHistoryBySessionId?.length > 0 ? [...chatHistoryBySessionId].reverse() : chats}
+                        isMobile={isMobileOnly}
+                        sendMessage={_sendMessage}
+                        isReady={readyState === ReadyState.OPEN}
+                        responding={responding}
+                        resetConnect={resetChats}
+                        chatModel={chatModel}
+                        handleChatModelChange={handleChatModelChange}
+                        botData={botData}
+                        suggestedQuery={suggestedQuery}
+                        suggestedQueryByUserQuery={suggestedQueryByUserQuery}
+                        chatText={chatText}
+                        handleChatText={handleChatText}
+                    />
+                </KeyProvider>
+            </ChatProvider>
         );
     };
 
-    const initMyChatbot = (options: {
-        clientId: string;
-        apiKey: string;
-        containerId: string;
-    }) => {
+    const initMyChatbot = (options: ITgramOptions) => {
         const container = document.getElementById(options.containerId);
-        console.log('container!!', container);
         if (!container) {
             return;
         }
-        ReactDOM.render(<TGram {...options} />, container);
+        ReactDOM.render(
+            <ChatProvider>
+                <KeyProvider>
+                    <TGram {...options} />,
+                </KeyProvider>
+            </ChatProvider>,
+            container,
+        );
     };
 
     // @ts-ignore
-    window.initMyChatbot = (options: {
-        clientId: string;
-        apiKey: string;
-        containerId: string;
-    }) => {
-        const container = document.getElementById(options.containerId);
-        console.log('container!!', container);
-        if (!container) {
-            return;
-        }
-        ReactDOM.render(<TGram {...options} />, container);
-    };
+    window.initMyChatbot = initMyChatbot;
 })();

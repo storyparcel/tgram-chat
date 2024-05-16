@@ -1,5 +1,5 @@
+import { Chat } from './contexts/chatContext';
 import fetchWithCommonOptions from './fetchWithCommonOptions';
-import { Chat } from './chat';
 import objectToQueryString from './helper/objectToQueryString';
 
 export interface ILoginField {

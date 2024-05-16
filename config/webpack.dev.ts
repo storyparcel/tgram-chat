@@ -3,6 +3,7 @@ import webpack from "webpack";
 import { merge } from "webpack-merge";
 import common from "./webpack.common";
 import WebpackDevServer from 'webpack-dev-server';
+import Dotenv from 'dotenv-webpack';
 
 // @ts-ignore
 declare module 'webpack' {
@@ -30,6 +31,11 @@ const configuration: webpack.Configuration = {
     watchOptions: {
         ignored: /node_modules/,
     },
+    plugins: [
+        new Dotenv({
+            path: path.resolve(__dirname, '../.env.development'),
+        }),
+    ],
 };
 
 export default merge(common, configuration);

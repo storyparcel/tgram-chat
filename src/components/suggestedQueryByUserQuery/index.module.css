@@ -11,7 +11,7 @@
     align-items: center;
     padding: 2px;
     border-radius: 6px 6px 0px 6px;
-    background-color: var(--primary-base);
+    background-color: var(--primary-03);
 }
 
 .title {

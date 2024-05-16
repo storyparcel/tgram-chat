@@ -1,0 +1,97 @@
+.layout {
+    position: relative;
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--gray-20);
+    background-color: var(--white-base);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.03);
+}
+
+.title {
+    color: var(--gray-80);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin-bottom: 6px;
+}
+
+.content {
+    color: var(--gray-60);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    margin-bottom: 20px;
+}
+
+.suggestionWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.suggestionItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    border: 1px solid var(--gray-30);
+    background-color: var(--white-base);
+    padding: 8px 12px;
+    color: var(--gray-60);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.writingComment {
+    background-color: var(--gray-10);
+}
+
+.closeButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 4px;
+}
+
+.divider {
+    background-color: var(--gray-30);
+    margin: 16px 0;
+}
+
+.opinionInput {
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--gray-90);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    padding: 18px;
+    border: 1px solid var(--gray-30);
+    background-color: var(--white-base);
+    margin-bottom: 16px;
+
+    &::placeholder {
+        color: var(--gray-40);
+    }
+
+    &:focus,
+    &:focus-within {
+        border: 1px solid var(--gray-50);
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
+.buttonWrapper > :nth-child(1) {
+    max-width: 100px;
+}
+
+.buttonWrapper > :nth-child(2) {
+    max-width: 208px;
+}

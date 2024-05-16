@@ -1,0 +1,45 @@
+.button {
+    box-sizing: border-box;
+    border-radius: 2px;
+    font-weight: 600;
+    width: 100%;
+}
+
+.blue {
+    background-color: var(--primary-03);
+    color: var(--white-base);
+}
+
+.gray {
+    background-color: var(--gray-10);
+    color: var(--gray-90);
+}
+
+.blueLine {
+    color: var(--primary-03);
+    background-color: var(--white-base);
+    border: 1px solid var(--primary-03);
+}
+
+.whiteLine {
+    color: var(--gray-90);
+    background-color: var(--white-base);
+    border: 1px solid var(--gray-50);
+}
+
+.disabled {
+    background-color: var(--gray-30);
+    color: var(--gray-40);
+}
+
+.l {
+    padding: 14px 12px;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.m {
+    padding: 8px;
+    font-size: 13px;
+    line-height: 16px;
+}

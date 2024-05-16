@@ -19,7 +19,7 @@
 
 .textArea:focus {
     outline: none;
-    border-color: var(--primary-base);
+    border-color: var(--primary-03);
 }
 
 .textArea::placeholder {

@@ -1,13 +1,14 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import * as styles from './index.module.css';
 import Loading from '../../components/loading';
 import UrlBlock from '../../blocks/urlBlock';
 import MarkdownRenderer from '../../components/markdownRenderer';
 import SearchingBlock from '../../blocks/searchingBlock';
-import { Chat } from '@src/chat';
 import { useKeyContext } from '@src/contexts/keyContext';
 import repository from '@src/repository';
 import { ASSETS } from '@src/constants';
+import OpinionBox, { OpinionType } from '@src/components/opinionBox';
+import { Chat } from '@src/contexts/chatContext';
 
 interface IBotMessage {
     chat: Chat;
@@ -16,13 +17,31 @@ interface IBotMessage {
 }
 
 const BotMessage: React.FC<IBotMessage> = (props) => {
+    const [ showOpinionBox, setShowOpinionBox ] = useState<boolean>(false);
+    const [ currentOpinion, setCurrentOpinion ] = useState<OpinionType | null>(null);
+
     const markdownRef = useRef<HTMLDivElement>(null);
-
-    const loading = useMemo(() => {
-        return props.chat.terminated === false;
-    }, [ props.chat.terminated ]);
-
+    const loading = useMemo(() => props.chat.terminated === false, [ props.chat.terminated ]);
     const { apiKey, clientId } = useKeyContext();
+
+    const openOpinionBox = useCallback((opinionType: OpinionType) => {
+        setShowOpinionBox(true);
+        setCurrentOpinion(opinionType);
+    }, []);
+
+    const closeOpinionBox = useCallback(() => {
+        setShowOpinionBox(false);
+        setCurrentOpinion(null);
+    }, []);
+
+    const handleSubmitOpinion = useCallback((comment: string) => {
+        window.alert(JSON.stringify({
+            sessionId: props.chat.data?.session_id,
+            callId: props.chat.callId,
+            like: currentOpinion === 'like',
+            comment,
+        }, null, 2))
+    }, [ props.chat, currentOpinion ]);
 
     const onClickLink = async (href: string | undefined) => {
         if (!href || !apiKey || !clientId || !props.chat.data?.session_id) {
@@ -80,31 +99,66 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                                     onClickLink={onClickLink}
                                 />
                             }
-                            <div className={styles.utilButtonWrapper}>
-                                <button
-                                    className={styles.utilButton}
-                                    onClick={copyAnswer}
-                                >
-                                    <img
-                                        src={ASSETS['clipboard-icon']}
-                                        width={20}
-                                        height={20}
-                                        alt='clipboard'
-                                    />
-                                </button>
-                                <button className={styles.utilButton}>
-                                    <img
-                                        src={ASSETS['share-icon']}
-                                        width={20}
-                                        height={20}
-                                        alt='share'
-                                    />
-                                </button>
-                            </div>
+                            { !loading &&
+                                <div className={styles.utilButtonWrapper}>
+                                    <button
+                                        className={styles.utilButton}
+                                        onClick={copyAnswer}
+                                    >
+                                        <img
+                                            src={ASSETS['clipboard-icon']}
+                                            width={20}
+                                            height={20}
+                                            alt='clipboard'
+                                        />
+                                    </button>
+                                    {/* TODO: 공유하기 활성화 */}
+                                    {/* <button className={styles.utilButton}>
+                                        <img
+                                            src={ASSETS['share-icon']}
+                                            width={20}
+                                            height={20}
+                                            alt='share'
+                                        />
+                                    </button> */}
+                                    <div className={styles.utilButtonDivider} />
+                                    <button
+                                        className={styles.utilButton}
+                                        onClick={() => openOpinionBox('like')}
+                                    >
+                                        <img
+                                            src={ASSETS['thumbs-up-inactive']}
+                                            width={20}
+                                            height={20}
+                                            alt='thumbs-up'
+                                        />
+                                    </button>
+                                    <button
+                                        className={`${styles.utilButton} ${styles.rotatedImage}`}
+                                        onClick={() => openOpinionBox('dislike')}
+                                    >
+                                        <img
+                                            src={ASSETS['thumbs-up-inactive']}
+                                            width={20}
+                                            height={20}
+                                            alt='thumbs-down'
+                                        />
+                                    </button>
+                                </div>
+                            }
                         </>
                     )
                 }
             </div>
+            { showOpinionBox && currentOpinion &&
+                <div className={styles.opinionBoxWrapper}>
+                    <OpinionBox
+                        opinionType={currentOpinion}
+                        onSubmit={handleSubmitOpinion}
+                        onClose={closeOpinionBox}
+                    />
+                </div>
+            }
             <div className={styles.loadingWrapper}>
                 <Loading loading={loading} />
             </div>

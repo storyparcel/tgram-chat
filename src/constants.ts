@@ -9,7 +9,6 @@ export const CHAT_INPUT_MAX_SIZE = 250;
 export const ASIDE_AREA_WIDTH = 142;
 export const HEADER_AREA_WIDTH = 56;
 export const HEADER_HEIGHT = 73;
-export const CHAT_INPUT_AREA_HEIGHT = 128;
 export const SIDEBAR_WIDTH = 256;
 
 export const FILTER_DATE_EXPR = 'yyyy-MM-dd';
@@ -56,4 +55,7 @@ export const ASSETS = {
     'share-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/share-icon.svg',
     'clipboard-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/clipboard-icon.svg',
     'more-options-icon': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/more-options-icon.svg',
+    'thumbs-up-active': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/thumbs-up-active.svg',
+    'thumbs-up-inactive': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/thumbs-up-inactive.svg',
+    'close': 'https://hugraph-app-media.s3.ap-northeast-2.amazonaws.com/system_resource/chat_icons/close.svg',
 };

@@ -1,6 +1,7 @@
 declare const styles: {
   readonly "bottom": string;
   readonly "chatArea": string;
+  readonly "chatLayer": string;
   readonly "copyRight": string;
   readonly "greeting": string;
   readonly "layout": string;

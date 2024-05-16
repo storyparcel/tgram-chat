@@ -1,19 +1,20 @@
 import React, { useMemo, useRef } from "react";
-import { BotData, Chat, ChatModelType, SuggestedQuery } from "..";
+import { BotData, ChatModelType, SuggestedQuery } from "..";
 import * as styles from './index.module.css';
 import BalloonWrapper from '../../layout/balloonWrapper';
 import ChatModelSelector from "@src/components/chatModelSelector";
 import NextLiner from "@src/components/nextLiner";
 import SuggestQuery from "@src/components/suggestQuery";
 import ChatInput from "@src/layout/chatInput";
+import { Chat } from "@src/contexts/chatContext";
 
 interface IChatBotTemplate {
     isMobile: boolean;
     chats: Array<Chat>;
     isReady: boolean;
     responding: boolean;
-    apiKey: string;
-    clientId: string;
+    // apiKey: string;
+    // clientId: string;
     chatModel: ChatModelType;
     botData: BotData;
     suggestedQuery: Array<SuggestedQuery>;
@@ -26,6 +27,7 @@ interface IChatBotTemplate {
 }
 
 const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
+    // console.log('tempalte prosp!!', props);
     const scrollRef = useRef<HTMLDivElement>(null);
     // const { setKeys } = useKeyContext();
     const disabledSubmit = useMemo(() => {
@@ -37,16 +39,17 @@ const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
     // }, [ props.apiKey, props.clientId ]);
 
     return (
-        <>
+        <div className={styles.layout}>
             <div
                 ref={scrollRef}
-                className={styles.layout}
+                className={styles.chatLayer}
             >
                 <div className={styles.scrollInnerWrapper}>
-                    <ChatModelSelector
+                    {/* // TODO: 나중에 다시 살려야함. */}
+                    {/* <ChatModelSelector
                         chatModel={props.chatModel}
                         onChange={props.handleChatModelChange}
-                    />
+                    /> */}
                     <div className={styles.greeting}>
                         <NextLiner text={props.botData.ai_greeting} />
                     </div>
@@ -82,7 +85,7 @@ const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
                 />
                 <div className={styles.copyRight}>Powered by HUGRAPH co., Ltd.</div>
             </div>
-        </>
+        </div>
     );
 };
 

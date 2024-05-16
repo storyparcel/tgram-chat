@@ -36,8 +36,15 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 4px;
+    gap: 12px;
     margin: 16px 0 0 -4px;
+}
+
+.utilButtonDivider {
+    width: 1px;
+    height: 16px;
+    background: var(--gray-40);
+    margin: 0 4px;
 }
 
 .utilButton {
@@ -47,4 +54,12 @@
     width: 28px;
     height: 28px;
     padding: 4px;
+}
+
+.rotatedImage {
+    transform: rotate(180deg);
+}
+
+.opinionBoxWrapper {
+    margin-top: 12px;
 }

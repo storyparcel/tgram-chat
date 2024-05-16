@@ -1,4 +1,3 @@
-const BASE_URL = 'http://dev-server:7060';
 const COMMON_HEADERS = {
     'Cache-Control': 'no-cache',
     Pragma: 'no-cache',
@@ -14,7 +13,7 @@ const fetchWithCommonOptions = async (url: string, options: any) => {
         },
     };
 
-    return fetch(`${BASE_URL}${url}`, mergedOptions);
+    return fetch(`${process.env.API_HOST}${url}`, mergedOptions);
 };
 
 export default fetchWithCommonOptions;
