@@ -120,9 +120,9 @@ class Repository {
                 throw new Error('not authorized.');
             }
 
-            const response = await fetchWithCommonOptions(`/api/chat/feedback`, {
+            const queryString = objectToQueryString(payload);
+            const response = await fetchWithCommonOptions(`/api/chat/feedback?${queryString}`, {
                 method: 'POST',
-                body: JSON.stringify(payload),
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
