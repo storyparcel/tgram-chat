@@ -111,13 +111,13 @@ const OpinionBox = forwardRef<HTMLDivElement, IOpinionBox>((props, ref) => {
                         />
                         <div className={styles.buttonWrapper}>
                             <Button
-                                theme='blue'
+                                theme='gray'
                                 size='m'
                                 style={{ fontSize: 14, borderRadius: 0, lineHeight: '20px' }}
                                 onClick={() => setWritingComment(false)}
                             >취소</Button>
                             <Button
-                                theme={comment ? 'gray' : 'disabled'}
+                                theme={comment ? 'blue' : 'disabled'}
                                 size='m'
                                 style={{ fontSize: 14, borderRadius: 0, lineHeight: '20px' }}
                                 onClick={() => props.onSubmit(comment)}

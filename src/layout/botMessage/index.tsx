@@ -35,7 +35,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
         setCurrentOpinion(null);
     }, []);
 
-    const feedback = useCallback(async (like: boolean, comment: string) => {
+    const feedback = async (like: boolean, comment: string) => {
         // NOTE: 핸들링 필요
         if (!props.chat.data?.session_id) {
             return;
@@ -49,7 +49,8 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
         };
 
         await props.feedback(payload);
-    }, [ props.feedback, props.chat ]);
+        closeOpinionBox();
+    };
 
     const handleSubmitOpinion = useCallback(async (comment: string) => {
         await feedback(
@@ -86,6 +87,9 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
             navigator.clipboard.writeText(messageText);
         }
     };
+
+    const liked = useMemo(() => props.chat.feedback?.like === true, [ props.chat ]);
+    const disliked = useMemo(() => props.chat.feedback?.like === false, [ props.chat ]);
 
     return (
         <div className={styles.layout}>
@@ -142,7 +146,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                                         onClick={() => openOpinionBox('like')}
                                     >
                                         <img
-                                            src={ASSETS['thumbs-up-inactive']}
+                                            src={ASSETS[liked ? 'thumbs-up-active' : 'thumbs-up-inactive']}
                                             width={20}
                                             height={20}
                                             alt='thumbs-up'
@@ -153,7 +157,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                                         onClick={() => openOpinionBox('dislike')}
                                     >
                                         <img
-                                            src={ASSETS['thumbs-up-inactive']}
+                                            src={ASSETS[disliked ? 'thumbs-up-active' : 'thumbs-up-inactive']}
                                             width={20}
                                             height={20}
                                             alt='thumbs-down'

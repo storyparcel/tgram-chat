@@ -35,7 +35,7 @@ const BalloonWrapper: React.FC<IBalloonWrapper> = (props) => {
             default:
                 return null;
         }
-    }, [ props.aiName, props.aiThumbnail ]);
+    }, [ props.aiName, props.aiThumbnail, props.feedback ]);
 
     const needShowSuggestedQueryByUserQuery = useMemo(() => {
         return !props.responding && props.chats[props.chats.length - 1]?.type === MessageType.BOT;

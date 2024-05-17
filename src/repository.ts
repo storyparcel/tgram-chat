@@ -30,7 +30,7 @@ class Repository {
     }): Promise<Array<Chat>> {
         try {
             const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`${this.url}/api/chat?${queryString}`, {
+            const response = await fetchWithCommonOptions(`${this.url}d?${queryString}`, {
                 method: 'GET',
             });
 
@@ -44,11 +44,14 @@ class Repository {
         }
     };
 
-    async getNewSuggestedQuery(payload: { api_key: string; user_query: string }): Promise<Array<string>> {
+    async getNewSuggestedQuery(payload: { user_query: string }, token: string | null): Promise<Array<string>> {
         try {
             const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`/api/suggested_query/query?${queryString}`, {
+            const response = await fetchWithCommonOptions(`/api/suggested_query/user/query?${queryString}`, {
                 method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) {
@@ -61,9 +64,7 @@ class Repository {
         }
     };
 
-    async ragInit(payload: {
-        api_key: string;
-    }): Promise<{
+    async ragInit(token: string | null): Promise<{
         ai_greeting: string;
         ai_name: string;
         ai_purpose: string;
@@ -71,9 +72,11 @@ class Repository {
         suggested_query: Array<{ query: string; id: number }>;
     }> {
         try {
-            const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`/api/generator/rag_init?${queryString}`, {
+            const response = await fetchWithCommonOptions(`/api/generator/user/rag_init`, {
                 method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
             if (!response.ok) {

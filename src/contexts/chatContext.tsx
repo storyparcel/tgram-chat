@@ -20,11 +20,17 @@ export type ChatData = {
     session_id?: string;
 } | null;
 
+export type Feedback = {
+    like: boolean;
+    comment: string;
+};
+
 export type BaseChat = {
     message: string;
     callId: string;
     data?: ChatData;
     terminated?: boolean;
+    feedback?: Feedback | null;
 };
 
 export type Chat = { type: MessageType } & BaseChat;
@@ -32,7 +38,8 @@ export type Chat = { type: MessageType } & BaseChat;
 interface ChatContextProps {
     chats: Array<Chat>;
     addChat: (chat: Chat) => void;
-    updateChat: (chat: Chat) => void;
+    updateChatMessage: (chat: Chat) => void;
+    updateChatFeedback: (callId: string, feedback: Feedback) => void;
     clearChats: () => void;
     getBotMessageIndexByQuestionId: (callId: string) => number;
 }
@@ -67,7 +74,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         setChats((prevChats) => [...prevChats, chat]);
     }, []);
 
-    const updateChat = useCallback((chat: Chat) => {
+    const updateChatMessage = useCallback((chat: Chat) => {
         const indexTargetChat = getBotMessageIndexByQuestionId(chat.callId);
         setChats(prevChats => {
             const targetChat = prevChats[indexTargetChat];
@@ -81,6 +88,19 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         });
     }, [ getBotMessageIndexByQuestionId ]);
 
+    // NOTE: 클라이언트 전용임.
+    const updateChatFeedback = useCallback((callId: string, feedback: Feedback) => {
+        const indexTargetChat = getBotMessageIndexByQuestionId(callId);
+        setChats(prevChats => {
+            const targetChat = prevChats[indexTargetChat];
+            prevChats[indexTargetChat] = {
+                ...targetChat,
+                feedback,
+            };
+            return [...prevChats];
+        });
+    }, [ getBotMessageIndexByQuestionId ]);
+
     const clearChats = useCallback(() => {
         setChats([]);
     }, []);
@@ -88,7 +108,8 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const contextValue: ChatContextProps = {
         chats,
         addChat,
-        updateChat,
+        updateChatMessage,
+        updateChatFeedback,
         clearChats,
         getBotMessageIndexByQuestionId,
     };

@@ -50,7 +50,8 @@ interface ITgramOptions {
         const {
             chats,
             addChat,
-            updateChat,
+            updateChatMessage,
+            updateChatFeedback,
             clearChats,
             getBotMessageIndexByQuestionId,
         } = useChatContext();
@@ -130,9 +131,19 @@ interface ITgramOptions {
         }, []);
 
         const feedback = useCallback(async (payload: IFeedbackPayload) => {
-            const res = await repository.feedback(payload, token);
-            window.alert(JSON.stringify(res, null, 2));
-        }, [ token ]);
+            try {
+                await repository.feedback(payload, token);
+                updateChatFeedback(
+                    payload.call_id,
+                    {
+                        like: payload.like,
+                        comment: payload.comment,
+                    },
+                );
+            } catch (err) {
+                // TODO: 에러 해들링.
+            }
+        }, [ token, updateChatFeedback ]);
 
         const responding = useMemo(() => {
             const lastChat = chats[chats.length - 1];
@@ -157,77 +168,67 @@ interface ITgramOptions {
             if (indexTargetChat === -1) {
                 addChat(newChat);
             } else {
-                updateChat(newChat);
+                updateChatMessage(newChat);
             }
         }, [getBotMessageIndexByQuestionId]);
 
         const updateSuggestedQueryByUserQuery = useCallback(() => {
-            // TODO: apiKey 방식이 아니여서..
-            // if (!lastMyChat || !props.apiKey) {
-            //     return;
-            // }
+            if (!lastMyChat || !token) {
+                return;
+            }
 
-            // (async () => {
-            //     const _suggestedQueryByUserQuery = await repository.getNewSuggestedQuery({
-            //         api_key: props.apiKey,
-            //         user_query: lastMyChat.message,
-            //     });
-            //     setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
-            // })();
-        }, [lastMyChat]);
+            (async () => {
+                const _suggestedQueryByUserQuery = await repository.getNewSuggestedQuery(
+                    { user_query: lastMyChat.message },
+                    token,
+                );
+                setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
+            })();
+        }, [lastMyChat, token]);
 
         const resetChats = useCallback(() => {
             setNeedForceReconnect(false);
             clearChats();
         }, []);
 
+        const initialize = useCallback((
+            // startDate: string,
+            // endDate: string,
+        ) => {
+            (async () => {
+                // TODO: header token이 있어야 응답이 오는 구조여서 일단 빈배열임.
+                // const chatHistory = await repository.loadChatHistory({
+                //     client_id: clientId,
+                //     size: 30,
+                // });
+                // console.log('tgram chatHistory', chatHistory);
+                const ragInitData = await repository.ragInit(token);
+                // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
+                // await this.getUserSessionHistory(
+                //     clientId,
+                //     apiKey,
+                //     startDate,
+                //     endDate,
+                // );
 
-        // TODO: apiKey 방식이 아니여서...
-        //////////////////////////////////////////////////////////////////////////////////////
-        // const initialize = useCallback((
-        //     clientId: string,
-        //     apiKey: string,
-        //     // startDate: string,
-        //     // endDate: string,
-        // ) => {
-        //     (async () => {
-        //         // TODO: header token이 있어야 응답이 오는 구조여서 일단 빈배열임.
-        //         const chatHistory = await repository.loadChatHistory({
-        //             client_id: clientId,
-        //             size: 30,
-        //         });
-        //         console.log('tgram chatHistory', chatHistory);
-        //         const ragInitData = await repository.ragInit({ api_key: apiKey });
-        //         console.log('tgram ragInitData', ragInitData);
-        //         // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
-        //         // await this.getUserSessionHistory(
-        //         //     clientId,
-        //         //     apiKey,
-        //         //     startDate,
-        //         //     endDate,
-        //         // );
+                setSuggestedQuery(ragInitData.suggested_query);
+                setBotData({
+                    ai_greeting: ragInitData.ai_greeting,
+                    ai_name: ragInitData.ai_name,
+                    ai_purpose: ragInitData.ai_purpose,
+                    ai_thumbnail: ragInitData.ai_thumbnail,
+                });
+                // setChats(chatHistory.reverse());
+                resetChats();
+            })();
+        }, [ token ]);
 
-        //         setSuggestedQuery(ragInitData.suggested_query);
-        //         setBotData({
-        //             ai_greeting: ragInitData.ai_greeting,
-        //             ai_name: ragInitData.ai_name,
-        //             ai_purpose: ragInitData.ai_purpose,
-        //             ai_thumbnail: ragInitData.ai_thumbnail,
-        //         });
-        //         setChats(chatHistory.reverse());
-        //         resetChats();
-        //     })();
-        // }, []);
-
-        // useEffect(() => {
-        //     initialize(
-        //         props.clientId,
-        //         props.apiKey,
-        //         // filterDateStore.formattedDate.startDate,
-        //         // filterDateStore.formattedDate.endDate,
-        //     );
-        // }, []);
-        //////////////////////////////////////////////////////////////////////////////////////
+        useEffect(() => {
+            initialize(
+                // filterDateStore.formattedDate.startDate,
+                // filterDateStore.formattedDate.endDate,
+            );
+        }, []);
 
         useEffect(() => {
             updateSuggestedQueryByUserQuery();
