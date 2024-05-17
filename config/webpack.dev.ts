@@ -12,14 +12,12 @@ declare module 'webpack' {
     }
 }
 
-const fileName = 'dev.js';
-
 const configuration: webpack.Configuration = {
     mode: "development",
     devtool: "inline-source-map",
     output: {
-        path: path.resolve(__dirname, "../dist"),
-        filename: fileName,
+        path: path.resolve(__dirname, "../dist/dev"),
+        filename: '[name].js',
         clean: true,
     },
     devServer: {
