@@ -21,7 +21,7 @@ const configuration: webpack.Configuration = {
         clean: true,
     },
     devServer: {
-        static: path.join(__dirname, '../dist'),
+        static: path.join(__dirname, '../dist/dev'),
         port: 9000,
         open: true,
         hot: true,
