@@ -20,49 +20,51 @@ export interface IFeedbackPayload {
     comment: string;
 }
 
+export type ApiHandler = {
+    tokenExpired: boolean;
+}
+
+const handleApiError = async (response: Response): Promise<ApiHandler> => {
+    if (response.status === 401 || response.status === 403) {
+        return { tokenExpired: true };
+    }
+    const errorData = await response.json();
+    throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.message}`);
+};
+
 class Repository {
     url = '';
 
+    private async fetchWithHandling(url: string, options: RequestInit) {
+        try {
+            const response = await fetchWithCommonOptions(url, options);
+            if (!response.ok) {
+                return handleApiError(response);
+            }
+            return response.json();
+        } catch (err) {
+            console.error('Fetch error:', err);
+            throw err;
+        }
+    }
+
     async loadChatHistory(payload: {
         client_id: string;
-        // api_key: string;
         size: number;
     }): Promise<Array<Chat>> {
-        try {
-            const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`${this.url}d?${queryString}`, {
-                method: 'GET',
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (err) {
-            return [];
-        }
-    };
+        const queryString = objectToQueryString(payload);
+        const url = `${this.url}d?${queryString}`;
+        return this.fetchWithHandling(url, { method: 'GET' });
+    }
 
     async getNewSuggestedQuery(payload: { user_query: string }, token: string | null): Promise<Array<string>> {
-        try {
-            const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`/api/suggested_query/user/query?${queryString}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (err) {
-            return [];
-        }
-    };
+        const queryString = objectToQueryString(payload);
+        const url = `/api/suggested_query/user/query?${queryString}`;
+        return this.fetchWithHandling(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    }
 
     async ragInit(token: string | null): Promise<{
         ai_greeting: string;
@@ -71,29 +73,12 @@ class Repository {
         ai_thumbnail: string;
         suggested_query: Array<{ query: string; id: number }>;
     }> {
-        try {
-            const response = await fetchWithCommonOptions(`/api/generator/user/rag_init`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (err) {
-            return {
-                ai_greeting: '',
-                ai_name: '',
-                ai_purpose: '',
-                ai_thumbnail: '',
-                suggested_query: [],
-            };
-        }
-    };
+        const url = `/api/generator/user/rag_init`;
+        return this.fetchWithHandling(url, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    }
 
     async recordClick(payload: {
         api_key: string;
@@ -102,43 +87,22 @@ class Repository {
         call_id: string;
         url: string;
     }): Promise<any> {
-        try {
-            const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`/api/chat/record_click?${queryString}`, {
-                method: 'POST',
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (err) {
-        }
-    };
+        const queryString = objectToQueryString(payload);
+        const url = `/api/chat/record_click?${queryString}`;
+        return this.fetchWithHandling(url, { method: 'POST' });
+    }
 
     async feedback(payload: IFeedbackPayload, token: string | null): Promise<any> {
-        try {
-            if (!token) {
-                throw new Error('not authorized.');
-            }
-
-            const queryString = objectToQueryString(payload);
-            const response = await fetchWithCommonOptions(`/api/chat/feedback?${queryString}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response.json();
-        } catch (err) {
+        if (!token) {
+            throw new Error('not authorized.');
         }
-    };
+        const queryString = objectToQueryString(payload);
+        const url = `/api/chat/feedback?${queryString}`;
+        return this.fetchWithHandling(url, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    }
 }
 
 const repository = new Repository();

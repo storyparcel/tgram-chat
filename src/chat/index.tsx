@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import ChatBotTemplate from './template';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { CHAT_INPUT_MAX_SIZE } from '../constants';
@@ -28,6 +28,7 @@ export type ChatModelType = 'T GRAM' | 'GPT 3.5' | 'GPT 4';
 interface ITgramOptions {
     token: string;
     containerId: string;
+    onTokenExpired: () => void;
 }
 
 (() => {
@@ -45,7 +46,7 @@ interface ITgramOptions {
             ai_thumbnail: '',
         });
 
-        const { token } = useTokenContext();
+        const { token, setToken } = useTokenContext();
 
         const {
             chats,
@@ -79,6 +80,11 @@ interface ITgramOptions {
                 },
                 onClose: (event) => {
                     console.log('close => ', event);
+
+                    // TODO:
+                    if (true) {
+                        props.onTokenExpired();
+                    }
                     if (needForceReconnect) {
                         setNeedForceReconnect(false);
                     }
@@ -132,18 +138,24 @@ interface ITgramOptions {
 
         const feedback = useCallback(async (payload: IFeedbackPayload) => {
             try {
-                await repository.feedback(payload, token);
-                updateChatFeedback(
-                    payload.call_id,
-                    {
-                        like: payload.like,
-                        comment: payload.comment,
-                    },
-                );
+                const response = await repository.feedback(payload, token);
+                // TODO: 일단은...
+                // @ts-ignore
+                if (response.tokenExpired) {
+                    props.onTokenExpired();
+                } else {
+                    updateChatFeedback(
+                        payload.call_id,
+                        {
+                            like: payload.like,
+                            comment: payload.comment,
+                        },
+                    );
+                }
             } catch (err) {
                 // TODO: 에러 해들링.
             }
-        }, [ token, updateChatFeedback ]);
+        }, [token, updateChatFeedback]);
 
         const responding = useMemo(() => {
             const lastChat = chats[chats.length - 1];
@@ -182,7 +194,14 @@ interface ITgramOptions {
                     { user_query: lastMyChat.message },
                     token,
                 );
-                setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
+
+                // TODO: 일단은...
+                // @ts-ignore
+                if (_suggestedQueryByUserQuery.tokenExpired) {
+                    props.onTokenExpired();
+                } else {
+                    setSuggestedQueryByUserQuery(_suggestedQueryByUserQuery)
+                }
             })();
         }, [lastMyChat, token]);
 
@@ -203,6 +222,20 @@ interface ITgramOptions {
                 // });
                 // console.log('tgram chatHistory', chatHistory);
                 const ragInitData = await repository.ragInit(token);
+                // TODO: 일단은...
+                // @ts-ignore
+                if (ragInitData.tokenExpired) {
+                    props.onTokenExpired();
+                } else {
+                    setSuggestedQuery(ragInitData.suggested_query);
+                    setBotData({
+                        ai_greeting: ragInitData.ai_greeting,
+                        ai_name: ragInitData.ai_name,
+                        ai_purpose: ragInitData.ai_purpose,
+                        ai_thumbnail: ragInitData.ai_thumbnail,
+                    });
+                }
+
                 // TODO: 지금 기준으로는 대시보드 용이라서 고민좀..
                 // await this.getUserSessionHistory(
                 //     clientId,
@@ -211,24 +244,25 @@ interface ITgramOptions {
                 //     endDate,
                 // );
 
-                setSuggestedQuery(ragInitData.suggested_query);
-                setBotData({
-                    ai_greeting: ragInitData.ai_greeting,
-                    ai_name: ragInitData.ai_name,
-                    ai_purpose: ragInitData.ai_purpose,
-                    ai_thumbnail: ragInitData.ai_thumbnail,
-                });
                 // setChats(chatHistory.reverse());
                 resetChats();
             })();
-        }, [ token ]);
+        }, [token]);
 
         useEffect(() => {
             initialize(
                 // filterDateStore.formattedDate.startDate,
                 // filterDateStore.formattedDate.endDate,
             );
-        }, []);
+        }, [ token ]);
+
+        useEffect(() => {
+            if (!props.token) {
+                return;
+            }
+
+            setToken(props.token);
+        }, [ props.token ]);
 
         useEffect(() => {
             updateSuggestedQueryByUserQuery();
