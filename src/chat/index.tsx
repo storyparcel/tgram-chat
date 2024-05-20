@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ChatBotTemplate from './template';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { CHAT_INPUT_MAX_SIZE } from '../constants';
