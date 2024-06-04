@@ -103,6 +103,7 @@ interface ITgramOptions {
             // }
 
             const queryString = objectToQueryString(parameters);
+            console.log('new socket url', `${process.env.SOCKET_URL}/api/generator/rag/user?${queryString}`);
             return `${process.env.SOCKET_URL}/api/generator/rag/user?${queryString}`;
         }, [token, sessionId]);
 
@@ -112,8 +113,8 @@ interface ITgramOptions {
         } = useWebSocket(
             getSocketUrl,
             {
-                onOpen: () => {
-                    console.log('open!');
+                onOpen: (event) => {
+                    console.log('open!', event);
                 },
                 onClose: (event) => {
                     console.log('close => ', event);
@@ -226,6 +227,7 @@ interface ITgramOptions {
             // endDate: string,
         ) => {
             (async () => {
+                console.log('initialize!!');
                 // TODO: header token이 있어야 응답이 오는 구조여서 일단 빈배열임.
                 // const chatHistory = await repository.loadChatHistory({
                 //     client_id: clientId,
@@ -247,11 +249,11 @@ interface ITgramOptions {
                     });
                 }
 
-                await resetChatsBySessionId(
-                    sessionId,
-                    token,
-                    props.onTokenExpired,
-                );
+                // await resetChatsBySessionId(
+                //     sessionId,
+                //     token,
+                //     props.onTokenExpired,
+                // );
             })();
         }, [token, sessionId]);
 
