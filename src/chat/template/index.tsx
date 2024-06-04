@@ -23,7 +23,7 @@ interface IChatBotTemplate {
     chatText: string;
     handleChatText: (chatText: string) => void;
     sendMessage: (message: string) => void;
-    resetConnect: () => void;
+    // resetConnect: () => void;
     handleChatModelChange: (chatModel: ChatModelType) => void;
     feedback: (payload: IFeedbackPayload) => Promise<any>;
 }

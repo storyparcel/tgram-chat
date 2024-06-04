@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type Token = string | null;
+export type Token = string | null;
 
 interface TokenContextProps {
     token: Token;

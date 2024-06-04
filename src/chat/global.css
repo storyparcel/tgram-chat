@@ -1,3 +1,70 @@
+* {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    color: #030303;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4em;
+}
+
+button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    /* outline: inherit; */
+}
+
+button:focus {
+    outline: 0;
+}
+
+button,
+select,
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-decoration: none!important;
+    color: inherit;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+input[type=password]::-webkit-contacts-auto-fill-button,
+input[type=password]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+input:not([type="checkbox"]) {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
 :root {
     /* color */
     --gray-5: #F8F9FA;

@@ -17,11 +17,11 @@ const configuration: webpack.Configuration = {
     devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, "../dist/dev"),
-        filename: '[name].js',
+        filename: "[name].[contenthash].js",
         clean: true,
     },
     devServer: {
-        static: path.join(__dirname, '../dist/dev'),
+        static: path.join(__dirname, '../'),
         port: 9000,
         open: true,
         hot: true,

@@ -48,6 +48,25 @@ class Repository {
         }
     }
 
+    async getNewSessionId(token: string | null): Promise<string> {
+        const url = `/api/chat/session/user/id`;
+        return this.fetchWithHandling(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    }
+
+    async getChatHistoryBySessionId(sessionId: string, token: string | null): Promise<Array<Chat>> {
+        const queryString = objectToQueryString({
+            size: 30,
+        });
+        const url = `/api/chat/history/user/${sessionId}?${queryString}`;
+        return this.fetchWithHandling(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+        });
+    }
+
     async loadChatHistory(payload: {
         client_id: string;
         size: number;

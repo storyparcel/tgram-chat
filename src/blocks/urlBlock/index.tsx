@@ -1,7 +1,7 @@
 import React from 'react';
 import * as styles from './index.module.css';
 import { CHAT_DEFAULT_IMAGE } from '../../constants';
-import { ChatUrl } from '@src/chat';
+import { ChatUrl } from '@src/contexts/chatContext';
 
 interface IUrlBlock {
     urls: Array<ChatUrl>;
