@@ -247,9 +247,13 @@ interface ITgramOptions {
                     });
                 }
 
-                clearChats();
+                await resetChatsBySessionId(
+                    sessionId,
+                    token,
+                    props.onTokenExpired,
+                );
             })();
-        }, [token]);
+        }, [token, sessionId]);
 
         useEffect(() => {
             (async () => {
