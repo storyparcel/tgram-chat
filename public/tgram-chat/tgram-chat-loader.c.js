@@ -26,7 +26,6 @@
                 throw new Error('Failed to fetch HTML content');
             }
             const iframeContent = await response.text();
-
             iframe.srcdoc = iframeContent;
 
             iframe.onload = function () {
@@ -46,6 +45,9 @@
                                 token: newToken,
                             }, '*');
                         });
+                        break;
+                    case 'FIRST_MESSAGE_SENT':
+                        options.onFirstMessageSent();
                         break;
                     case 'IFRAME_READY':
                         window.TgramChat.initialized = true;
