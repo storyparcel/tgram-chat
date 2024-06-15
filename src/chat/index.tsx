@@ -32,6 +32,7 @@ interface ITgramOptions {
     token: string;
     containerId: string;
     onTokenExpired: () => void;
+    onFirstMessageSent: () => void;
 }
 
 (() => {
@@ -287,6 +288,12 @@ interface ITgramOptions {
         useEffect(() => {
             updateSuggestedQueryByUserQuery(token, props.onTokenExpired);
         }, [lastMyChat?.message]);
+
+        useEffect(() => {
+            if (chats.length === 1) {
+                props.onFirstMessageSent();
+            }
+        }, [ chats ]);
 
         if (!token) {
             return null;
