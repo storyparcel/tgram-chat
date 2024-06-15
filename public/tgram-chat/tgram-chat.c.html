@@ -63,12 +63,17 @@
             parent.postMessage({ type: 'TOKEN_EXPIRED' }, '*');
         }
 
+        function onFirstMessageSent() {
+            parent.postMessage({ type: 'FIRST_MESSAGE_SENT' }, '*');
+        }
+
         function initialize(token, sessionId) {
             tgramInstance = window.initMyChatbot({
                 containerId: "tgram-chat-container",
                 token,
                 sessionId,
-                onTokenExpired: onTokenExpired,
+                onTokenExpired,
+                onFirstMessageSent,
             });
         }
     </script>

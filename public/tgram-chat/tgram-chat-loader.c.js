@@ -21,7 +21,7 @@
         }
 
         try {
-            const response = await fetch('https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/public/tgram-chat/tgram-chat.b.html');
+            const response = await fetch('https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/public/tgram-chat/tgram-chat.c.html');
             if (!response.ok) {
                 throw new Error('Failed to fetch HTML content');
             }
