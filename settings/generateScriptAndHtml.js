@@ -54,11 +54,11 @@ const generateHtmlFile = (version) => {
     const htmlContent = getHtmlTemplateContent(version).replace('{{SCRIPT_SRC}}', scriptUrl);
     fs.writeFileSync(outputFilePath, htmlContent, 'utf-8');
     console.log(`Generated ${outputFilePath}`);
+    return outputFilePath;
 };
 
-
-const generateLoaderFile = (version) => {
-    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/public/${version.environment}/${version.name}/tgram-chat.html`;
+const generateLoaderFile = (version, htmlFilePath) => {
+    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/public/${version.environment}/${version.name}/${path.basename(htmlFilePath)}`;
     const loaderFilePath = path.join(path.resolve(__dirname, version.outputDir), `tgram-chat-loader.${getBundleFileHash(version)}.js`);
     const loaderContent = getLoaderTemplateContent(version).replace('{{IFRAME_SRC}}', scriptUrl);
     fs.writeFileSync(loaderFilePath, loaderContent, 'utf-8');
@@ -66,8 +66,8 @@ const generateLoaderFile = (version) => {
 };
 
 versions.forEach(version => {
-    generateHtmlFile(version);
-    generateLoaderFile(version);
+    const htmlFilePath = generateHtmlFile(version);
+    generateLoaderFile(version, htmlFilePath);
 });
 
 function getVersionedBundleFileName(version) {
