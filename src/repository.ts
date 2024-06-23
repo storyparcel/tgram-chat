@@ -1,6 +1,7 @@
-import { Chat } from './contexts/chatContext';
+
 import fetchWithCommonOptions from './fetchWithCommonOptions';
 import objectToQueryString from './helper/objectToQueryString';
+import { Chat } from './hooks/useChatProviderLogic';
 
 export interface ILoginField {
     username: string;
@@ -20,6 +21,25 @@ export interface IFeedbackPayload {
     comment: string;
 }
 
+export interface IBookmarkRegisterPayload {
+    session_id: string;
+    call_id: string;
+    call_title?: string;
+}
+
+export interface IRecordClickPayload {
+    api_key: string;
+    client_id: string;
+    session_id: string;
+    call_id: string;
+    url: string;
+}
+
+export interface IBookmarkDeletePayload {
+    session_id: string;
+    call_id: string;
+}
+
 export type ApiHandler = {
     tokenExpired: boolean;
 }
@@ -32,10 +52,10 @@ const handleApiError = async (response: Response): Promise<ApiHandler> => {
     throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.message}`);
 };
 
-class Repository {
+class BaseRepository {
     url = '';
 
-    private async fetchWithHandling(url: string, options: RequestInit) {
+    protected async fetchWithHandling(url: string, options: RequestInit) {
         try {
             const response = await fetchWithCommonOptions(url, options);
             if (!response.ok) {
@@ -76,53 +96,43 @@ class Repository {
         return this.fetchWithHandling(url, { method: 'GET' });
     }
 
-    async getNewSuggestedQuery(payload: { user_query: string }, token: string | null): Promise<Array<string>> {
+    async recordClick(payload: IRecordClickPayload): Promise<any> {
         const queryString = objectToQueryString(payload);
-        const url = `/api/suggested_query/user/query?${queryString}`;
+        const url = `/api/chat/record_click?${queryString}`;
+        return this.fetchWithHandling(url, { method: 'POST' });
+    }
+
+    async getBookmark(token: string | null): Promise<Array<string>> {
+        const url = `/api/chat/bookmark/user`;
         return this.fetchWithHandling(url, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         });
     }
 
-    async ragInit(token: string | null): Promise<{
-        ai_greeting: string;
-        ai_name: string;
-        ai_purpose: string;
-        ai_thumbnail: string;
-        suggested_query: Array<{ query: string; id: number }>;
-    }> {
-        const url = `/api/generator/user/rag_init`;
+    async addBookmark(payload: IBookmarkRegisterPayload, token: string | null): Promise<any> {
+        if (!token) {
+            throw new Error('not authorized.');
+        }
+        const queryString = objectToQueryString(payload);
+        const url = `/api/chat/bookmark/user?${queryString}`;
         return this.fetchWithHandling(url, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
         });
     }
 
-    async recordClick(payload: {
-        api_key: string;
-        client_id: string;
-        session_id: string;
-        call_id: string;
-        url: string;
-    }): Promise<any> {
-        const queryString = objectToQueryString(payload);
-        const url = `/api/chat/record_click?${queryString}`;
-        return this.fetchWithHandling(url, { method: 'POST' });
-    }
-
-    async feedback(payload: IFeedbackPayload, token: string | null): Promise<any> {
+    async removeBookmark(payload: IBookmarkDeletePayload, token: string | null): Promise<any> {
         if (!token) {
             throw new Error('not authorized.');
         }
         const queryString = objectToQueryString(payload);
-        const url = `/api/chat/feedback?${queryString}`;
+        const url = `/api/chat/bookmark/user?${queryString}`;
         return this.fetchWithHandling(url, {
-            method: 'POST',
+            method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}` },
         });
     }
 }
 
-const repository = new Repository();
-export default repository;
+export default BaseRepository;

@@ -1,3 +1,107 @@
+* {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    color: #030303;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4em;
+}
+
+button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    /* outline: inherit; */
+}
+
+button:focus {
+    outline: 0;
+}
+
+button,
+select,
+a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-decoration: none!important;
+    color: inherit;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+input[type=password]::-webkit-contacts-auto-fill-button,
+input[type=password]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    margin: 0;
+}
+
+input:not([type="checkbox"]) {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+:root {
+    /* color */
+    --gray-5: #F8F9FA;
+    --gray-10: #F0F2F4;
+    --gray-15: #E8EAEE;
+    --gray-20: #DCDEE4;
+    --gray-30: #D2D4DA;
+    --gray-40: #BCBEC6;
+    --gray-50: #9EA2A8;
+    --gray-60: #7B7D84;
+    --gray-70: #585C64;
+    --gray-80: #30343C;
+    --gray-90: #111319;
+
+    --white-base: #ffffff;
+
+    --black-base: #030303;
+
+    --red-light: #FFE9ED;
+    --red-base: #FF3D67;
+
+    --green-light: #D7F0E2;
+    --green-base: #45CC7E;
+
+    --purple-light: #EEE5FF;
+    --purple-base: #742FDD;
+
+    --primary-light: #E4EEFF;
+    --primary-03: #3B88FF;
+
+
+    /* variables */
+    --chat-input-area-height: 128px;
+}
+
+
+
 .layout {
     position: relative;
     width: 100%;
@@ -7,8 +111,6 @@
 }
 
 .chatLayer {
-    display: flex;
-    flex-direction: column-reverse;
     overflow-anchor: auto!important;
     height: calc(100% - var(--chat-input-area-height));
     overflow-y: auto;
@@ -22,9 +124,19 @@
     scrollbar-width: none;  /* Firefox */
 }
 
+.chatLayerWithChats {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.chatLayerNoChats {
+    display: flex;
+    flex-direction: column;
+}
+
 .scrollInnerWrapper {
     margin: 80px auto 0 auto;
-    padding-bottom: 30px;
+    padding-bottom: 40px;
     width: 100%;
 }
 
@@ -41,20 +153,12 @@
 
 .greeting {
     margin-top: 56px;
-    color: var(--gray-80);
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-}
-
-.purpose {
-    margin: 72px 0 32px 0;
     color: var(--gray-70);
     text-align: center;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+    margin-bottom: 48px;
 }
 
 .chatArea {

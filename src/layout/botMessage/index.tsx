@@ -5,10 +5,10 @@ import UrlBlock from '../../blocks/urlBlock';
 import MarkdownRenderer from '../../components/markdownRenderer';
 import SearchingBlock from '../../blocks/searchingBlock';
 import { useKeyContext } from '@src/contexts/keyContext';
-import repository, { IFeedbackPayload } from '@src/repository';
 import { ASSETS } from '@src/constants';
 import OpinionBox, { OpinionType } from '@src/components/opinionBox';
-import { Chat } from '@src/contexts/chatContext';
+import { IFeedbackPayload } from '@src/repository';
+import { Chat } from '@src/hooks/useChatProviderLogic';
 
 interface IBotMessage {
     chat: Chat;
@@ -24,6 +24,7 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
     const markdownRef = useRef<HTMLDivElement>(null);
     const loading = useMemo(() => props.chat.terminated === false, [ props.chat.terminated ]);
     const { apiKey, clientId } = useKeyContext();
+    // const { recordClick } = useChatContext();
 
     const openOpinionBox = useCallback((opinionType: OpinionType) => {
         setShowOpinionBox(true);
@@ -64,13 +65,14 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
             return;
         }
 
-        await repository.recordClick({
-            api_key: apiKey,
-            client_id: clientId,
-            session_id: props.chat.data.session_id,
-            call_id: props.chat.callId,
-            url: href,
-        });
+        // TODO: 붙여야함.
+        // await recordClick({
+        //     api_key: apiKey,
+        //     client_id: clientId,
+        //     session_id: props.chat.data.session_id,
+        //     call_id: props.chat.callId,
+        //     url: href,
+        // });
     };
 
     const extraData = useMemo(() => {
@@ -84,7 +86,14 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
     const copyAnswer = () => {
         if (markdownRef.current) {
             const messageText = markdownRef.current.innerText;
-            navigator.clipboard.writeText(messageText);
+            navigator.clipboard.writeText(messageText)
+                .then(() => {
+                    // NOTE: 별도 피드백이 필요할 때.
+                })
+                .catch((err) => {
+                    // NOTE: 별도 피드백이 필요할 때.
+                    console.error(err);
+                });
         }
     };
 
@@ -97,8 +106,8 @@ const BotMessage: React.FC<IBotMessage> = (props) => {
                 <img
                     src={props.aiThumbnail}
                     alt={props.aiName ?? 'profile'}
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                 />
                 <div>{props.aiName}</div>
             </div>

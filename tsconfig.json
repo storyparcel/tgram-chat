@@ -23,7 +23,7 @@
       { "name": "typescript-plugin-css-modules" },
     ],
   },
-  "include": ["src", "index.d.ts"],
+  "include": ["src", "index.d.ts", "src/repository.ts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "compilerOptions": {

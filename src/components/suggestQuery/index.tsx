@@ -1,6 +1,6 @@
 import React from 'react';
 import * as styles from './index.module.css';
-import { SuggestedQuery } from '@src/chat';
+import { SuggestedQuery } from '@src/chat/anonymous';
 
 interface ISuggestQuery {
     queries: Array<SuggestedQuery>;

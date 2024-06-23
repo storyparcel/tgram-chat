@@ -9,10 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 24px;
+    padding: 0px 20px;
     border-radius: 4px;
-    background-color: #F5FBFF;
-    color: var(--gray-80);
+    background-color: var(--gray-5);
+    color: var(--gray-90);
     font-size: 14px;
     font-weight: 600;
     line-height: 20px;

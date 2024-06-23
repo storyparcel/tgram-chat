@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Tgram</title>
+    <script src="https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/dist/dev/dashboard/main.39c36d368d787b0067c2.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #tgram-container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="tgram-container"></div>
+    <script>
+        let tgramInstance;
+
+        window.addEventListener('message', function (event) {
+            if (!event.data) {
+                return;
+            }
+
+            switch (event.data.type) {
+                case 'INIT_TGRAM_CHAT':
+                    const initialToken = event.data.token;
+                    const initialSessionId = event.data.sessionId;
+                    initialize(initialToken, initialSessionId);
+                    break;
+                case 'UPDATE_TOKEN':
+                    const newToken = event.data.token;
+                    if (tgramInstance.current) {
+                        tgramInstance.current.updateToken(newToken);
+                    }
+                    break;
+                case 'UPDATE_SESSION_ID':
+                    const newSessionId = event.data.sessionId;
+                    if (tgramInstance.current) {
+                        tgramInstance.current.updateSessionId(newSessionId);
+                    }
+                    break;
+                default:
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function () {
+            parent.postMessage({
+                type: 'IFRAME_READY',
+            }, '*');
+        });
+
+        function onTokenExpired() {
+            parent.postMessage({ type: 'TOKEN_EXPIRED' }, '*');
+        }
+
+        function onFirstMessageSent() {
+            parent.postMessage({ type: 'FIRST_MESSAGE_SENT' }, '*');
+        }
+
+        function initialize(token, sessionId) {
+            tgramInstance = window.initMyChatbot({
+                containerId: "tgram-container",
+                token,
+                sessionId,
+                onTokenExpired,
+                onFirstMessageSent,
+            });
+        }
+    </script>
+</body>
+</html>

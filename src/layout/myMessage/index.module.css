@@ -1,19 +1,30 @@
 .layout {
+    position: relative;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 16px;
-    text-align: right;
+    margin-bottom: 24px;
+    border-top: 1px solid var(--gray-20);
+    border-bottom: 1px solid var(--gray-20);
+    padding: 20px 0;
 }
 
 .message {
     display: inline-block;
-    border-radius: 12px 12px 0px 12px;
-    border: 2px solid var(--primary-03);
-    background-color: var(--primary-03);
-    padding: 12px 16px;
-    color: var(--white-base);
+    color: var(--gray-90);
     font-size: 16px;
     font-weight: 600;
-    line-height: 24px;
-    text-align: left;
+    line-height: 22px;
+    padding-right: 36px;
+}
+
+.copyButton {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
 }

@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from "react";;
 import MyMessage from "./myMessage";
 import BotMessage from "./botMessage";
 import SuggestedQueryByUserQuery from '../components/suggestedQueryByUserQuery';
-import { Chat, MessageType } from "@src/contexts/chatContext";
 import { IFeedbackPayload } from "@src/repository";
+import { Chat, MessageType } from "@src/hooks/useChatProviderLogic";
 
 interface IBalloonWrapper {
     chats: Array<Chat>;

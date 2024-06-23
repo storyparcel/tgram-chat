@@ -27,10 +27,10 @@ const SuggestedQueryByUserQuery: React.FC<ISuggestedQueryByUserQuery> = (props) 
                         className={styles.queryBalloonItem}
                         key={`${query}-${i}`}
                     >
-                        <div
+                        <button
                             className={styles.queryBalloon}
                             onClick={() => props.sendMessage(query)}
-                        >{query}</div>
+                        >{query}</button>
                     </li>
                 ))}
             </ul>

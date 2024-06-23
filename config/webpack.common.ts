@@ -8,7 +8,6 @@ const configuration: webpack.Configuration = {
             "@src": path.resolve(__dirname, "../src/"),
         },
     },
-    entry: "./src/index",
     module: {
         rules: [
             {

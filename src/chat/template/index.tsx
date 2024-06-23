@@ -1,21 +1,19 @@
 import React, { useMemo, useRef } from "react";
-import { BotData, ChatModelType, SuggestedQuery } from "..";
+import { BotData, ChatModelType, SuggestedQuery } from "../anonymous";
 import * as styles from './index.module.css';
 import BalloonWrapper from '../../layout/balloonWrapper';
 // import ChatModelSelector from "@src/components/chatModelSelector";
 import NextLiner from "@src/components/nextLiner";
 import SuggestQuery from "@src/components/suggestQuery";
 import ChatInput from "@src/layout/chatInput";
-import { Chat } from "@src/contexts/chatContext";
 import { IFeedbackPayload } from "@src/repository";
+import { Chat } from "@src/hooks/useChatProviderLogic";
 
-interface IChatBotTemplate {
+interface ITgramTemplate {
     isMobile: boolean;
     chats: Array<Chat>;
     isReady: boolean;
     responding: boolean;
-    // apiKey: string;
-    // clientId: string;
     chatModel: ChatModelType;
     botData: BotData;
     suggestedQuery: Array<SuggestedQuery>;
@@ -28,23 +26,21 @@ interface IChatBotTemplate {
     feedback: (payload: IFeedbackPayload) => Promise<any>;
 }
 
-const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
-    // console.log('tempalte prosp!!', props);
+const TgramTemplate: React.FC<ITgramTemplate> = (props) => {
     const scrollRef = useRef<HTMLDivElement>(null);
-    // const { setKeys } = useKeyContext();
     const disabledSubmit = useMemo(() => {
         return props.chatText === '' || !props.isReady || props.responding === true;
     }, [ props.chatText, props.isReady, props.responding ]);
 
-    // useEffect(() => {
-    //     setKeys(props.apiKey, props.clientId);
-    // }, [ props.apiKey, props.clientId ]);
+    const chatLayerClass = useMemo(() => {
+        return props.chats.length > 0 ? styles.chatLayerWithChats : styles.chatLayerNoChats;
+    }, [ props.chats ]);
 
     return (
         <div className={styles.layout}>
             <div
                 ref={scrollRef}
-                className={styles.chatLayer}
+                className={`${styles.chatLayer} ${chatLayerClass}`}
             >
                 <div className={styles.scrollInnerWrapper}>
                     {/* // TODO: 나중에 다시 살려야함. */}
@@ -54,9 +50,6 @@ const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
                     /> */}
                     <div className={styles.greeting}>
                         <NextLiner text={props.botData.ai_greeting} />
-                    </div>
-                    <div className={styles.purpose}>
-                        <NextLiner text={props.botData.ai_purpose} />
                     </div>
                     <SuggestQuery
                         queries={props.suggestedQuery}
@@ -91,4 +84,4 @@ const ChatBotTemplate: React.FC<IChatBotTemplate> = (props) => {
     );
 };
 
-export default ChatBotTemplate;
+export default TgramTemplate;
