@@ -33,6 +33,11 @@
                     const ragUuid = event.data.ragUuid;
                     initialize(ragUuid);
                     break;
+                case 'RECONNECT_CHAT':
+                    if (tgramInstance.current) {
+                        tgramInstance.current.reconnectChat();
+                    }
+                    break;
                 default:
             }
         });

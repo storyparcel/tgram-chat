@@ -43,6 +43,16 @@
                     default:
                 }
             });
+
+            window.TgramPublic.reconnectChat = function () {
+                if (window.TgramPublic.initialized) {
+                    iframe.contentWindow.postMessage({
+                        type: 'RECONNECT_CHAT',
+                    }, '*');
+                } else {
+                    console.warn('TgramPublic is not initialized yet.');
+                }
+            };
         } catch (error) {
             console.error('Error loading iframe content:', error);
         }

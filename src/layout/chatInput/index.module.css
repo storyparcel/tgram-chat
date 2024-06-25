@@ -29,8 +29,8 @@
 
 .submitButton {
     position: absolute;
-    top: 11px;
-    right: 12px;
+    top: 7px;
+    right: 7px;
     padding: 12px;
     display: flex;
     justify-content: center;
@@ -43,7 +43,7 @@
 
 .loadingWrapper {
     position: absolute;
-    top: 0;
+    top: 3px;
     right: 0;
     padding: 7px;
     display: flex;

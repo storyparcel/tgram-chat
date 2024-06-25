@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import TgramTemplate from '../template';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { CHAT_INPUT_MAX_SIZE } from '../../constants';
@@ -66,16 +66,13 @@ interface ITgramOptions {
             }
             const parameters = {};
             const queryString = objectToQueryString(parameters);
-            console.log('new socket url', `${process.env.SOCKET_URL}/api/generator/rag/public/${props.ragUuid}?${queryString}`);
             return `${process.env.SOCKET_URL}/api/generator/rag/public/${props.ragUuid}?${queryString}`;
         }, [props.ragUuid]);
-
-
-        // /api/generator/rag/public/{rag_uuid}
 
         const {
             sendJsonMessage,
             readyState,
+            getWebSocket,
         } = useWebSocket(
             getSocketUrl,
             {
@@ -84,12 +81,7 @@ interface ITgramOptions {
                 },
                 onClose: (event) => {
                     console.log('close => ', event);
-
-                    // TODO:
-                    // if (true) {
-                    //     console.log('close refresh....');
-                    //     props.onTokenExpired();
-                    // }
+                    clearChats();
                     if (needForceReconnect) {
                         setNeedForceReconnect(false);
                     }
@@ -104,6 +96,17 @@ interface ITgramOptions {
             },
             needForceReconnect === false,
         );
+
+        useImperativeHandle(ref, () => {
+            return {
+                reconnectChat: () => {
+                    setNeedForceReconnect(true);
+                    if (getWebSocket()?.readyState === ReadyState.OPEN) {
+                        getWebSocket()?.close();
+                    }
+                },
+            };
+        }, []);
 
         const handleChatModelChange = useCallback((chatModel: ChatModelType) => {
             setChatModel(chatModel);

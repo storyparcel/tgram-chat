@@ -30,7 +30,7 @@ button,
 select,
 a {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    text-decoration: none!important;
+    text-decoration: none !important;
     color: inherit;
     cursor: pointer;
 }
@@ -97,31 +97,54 @@ input:not([type="checkbox"]) {
 
 
     /* variables */
-    --chat-input-area-height: 128px;
+    --chat-input-area-height: 116px;
 }
-
 
 
 .layout {
     position: relative;
-    width: 100%;
+    margin: 0 auto;
+    max-width: 991.98px;
     height: 100%;
     box-sizing: border-box;
     padding: 0 32px;
+    background-color: var(--white-base);
+}
+
+.scrollInnerWrapper {
+    margin: 64px auto 0 auto;
+    padding-bottom: 40px;
+    width: 100%;
+}
+
+.greeting {
+    color: var(--gray-70);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+    margin-bottom: 48px;
+}
+
+.chatArea {
+    margin-top: 64px;
 }
 
 .chatLayer {
-    overflow-anchor: auto!important;
+    overflow-anchor: auto !important;
     height: calc(100% - var(--chat-input-area-height));
     overflow-y: auto;
+
     /* Hide scrollbar for Chrome, Safari and Opera */
     ::-webkit-scrollbar {
         display: none;
     }
 
     /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .chatLayerWithChats {
@@ -132,12 +155,6 @@ input:not([type="checkbox"]) {
 .chatLayerNoChats {
     display: flex;
     flex-direction: column;
-}
-
-.scrollInnerWrapper {
-    margin: 80px auto 0 auto;
-    padding-bottom: 40px;
-    width: 100%;
 }
 
 .copyRight {
@@ -151,22 +168,24 @@ input:not([type="checkbox"]) {
     margin-top: 16px;
 }
 
-.greeting {
-    margin-top: 56px;
-    color: var(--gray-70);
-    text-align: center;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 28px;
-    margin-bottom: 48px;
-}
-
-.chatArea {
-    margin-top: 64px;
-}
-
 .bottom {
     box-sizing: border-box;
     margin: 0 auto;
     height: var(--chat-input-area-height);
+}
+
+@media (max-width: 575.98px) {
+    .layout {
+        padding: 0 20px;
+    }
+
+    .scrollInnerWrapper {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .greeting {
+        margin-bottom: 40px;
+    }
 }
