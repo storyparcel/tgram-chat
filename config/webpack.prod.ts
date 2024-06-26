@@ -11,7 +11,7 @@ const configuration: webpack.Configuration = {
     devtool: "cheap-module-source-map",
     output: {
         path: path.resolve(__dirname, "../dist/prod"),
-        filename: "[name].js",
+        filename: "[name].[contenthash].js",
         clean: true,
     },
     plugins: [

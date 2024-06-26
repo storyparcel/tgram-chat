@@ -3,10 +3,10 @@ const path = require('path');
 const crypto = require('crypto');
 
 const versions = [
-    { name: 'dashboard', template: './dashboard/tgram-chat-template.html', outputDir: '../dist/dev/dashboard/static-files', environment: 'dev' },
-    { name: 'dashboard', template: './dashboard/tgram-chat-template.html', outputDir: '../dist/prod/dashboard/static-files', environment: 'prod' },
-    { name: 'anonymous', template: './anonymous/tgram-chat-template.html', outputDir: '../dist/dev/anonymous/static-files', environment: 'dev' },
-    { name: 'anonymous', template: './anonymous/tgram-chat-template.html', outputDir: '../dist/prod/anonymous/static-files', environment: 'prod' },
+    { name: 'dashboard', template: './dashboard/tgram-chat-template.html', outputDir: '../public/dev/dashboard', environment: 'dev' },
+    { name: 'dashboard', template: './dashboard/tgram-chat-template.html', outputDir: '../public/prod/dashboard', environment: 'prod' },
+    { name: 'anonymous', template: './anonymous/tgram-chat-template.html', outputDir: '../public/dev/anonymous', environment: 'dev' },
+    { name: 'anonymous', template: './anonymous/tgram-chat-template.html', outputDir: '../public/prod/anonymous', environment: 'prod' },
 ];
 
 const deleteFilesInDir = (dirPath) => {
@@ -48,8 +48,9 @@ const getLoaderTemplateContent = (version) => {
 };
 
 const generateHtmlFile = (version) => {
-    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/dist/${version.environment}/${version.name}/main.js`;
-    const outputFilePath = path.join(path.resolve(__dirname, version.outputDir), `tgram-chat.html`);
+    const bundleFileName = getVersionedBundleFileName(version);
+    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/dist/${version.environment}/${version.name}/${bundleFileName}`;
+    const outputFilePath = path.join(path.resolve(__dirname, version.outputDir), `tgram-chat.${getBundleFileHash(version)}.html`);
     const htmlContent = getHtmlTemplateContent(version).replace('{{SCRIPT_SRC}}', scriptUrl);
     fs.writeFileSync(outputFilePath, htmlContent, 'utf-8');
     console.log(`Generated ${outputFilePath}`);
@@ -57,8 +58,8 @@ const generateHtmlFile = (version) => {
 };
 
 const generateLoaderFile = (version, htmlFilePath) => {
-    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/dist/${version.environment}/${version.name}/static-files/tgram-chat.html`;
-    const loaderFilePath = path.join(path.resolve(__dirname, version.outputDir), `tgram-chat-loader.js`);
+    const scriptUrl = `https://cdn.jsdelivr.net/gh/storyparcel/tgram-chat/public/${version.environment}/${version.name}/${path.basename(htmlFilePath)}`;
+    const loaderFilePath = path.join(path.resolve(__dirname, version.outputDir), `tgram-chat-loader.${getBundleFileHash(version)}.js`);
     const loaderContent = getLoaderTemplateContent(version).replace('{{IFRAME_SRC}}', scriptUrl);
     fs.writeFileSync(loaderFilePath, loaderContent, 'utf-8');
     console.log(`Generated ${loaderFilePath}`);
@@ -68,3 +69,22 @@ versions.forEach(version => {
     const htmlFilePath = generateHtmlFile(version);
     generateLoaderFile(version, htmlFilePath);
 });
+
+function getVersionedBundleFileName(version) {
+    const files = fs.readdirSync(path.resolve(__dirname, `../dist/${version.environment}/${version.name}`));
+    const bundleRegex = /^main\.[a-f0-9]+\.js$/;
+    const bundleFile = files.find(file => bundleRegex.test(file));
+    if (!bundleFile) {
+        throw new Error(`Bundle file not found for ${version.name}`);
+    }
+    return bundleFile;
+}
+
+function getBundleFileHash(version) {
+    const bundleFileName = getVersionedBundleFileName(version);
+    const bundleFilePath = path.resolve(__dirname, `../dist/${version.environment}/${version.name}/${bundleFileName}`);
+    const buffer = fs.readFileSync(bundleFilePath);
+    const hash = crypto.createHash('sha256').update(buffer).digest('hex');
+    const lenHash = 10;
+    return hash.substring(0, lenHash);
+}
