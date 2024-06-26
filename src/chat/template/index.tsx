@@ -55,18 +55,20 @@ const TgramTemplate: React.FC<ITgramTemplate> = (props) => {
                         queries={props.suggestedQuery}
                         sendMessage={props.sendMessage}
                     />
-                    <div className={styles.chatArea}>
-                        <BalloonWrapper
-                            chats={props.chats}
-                            isMobile={props.isMobile}
-                            aiName={props.botData.ai_name}
-                            aiThumbnail={props.botData.ai_thumbnail}
-                            suggestedQueryByUserQuery={props.suggestedQueryByUserQuery}
-                            responding={props.responding}
-                            sendMessage={props.sendMessage}
-                            feedback={props.feedback}
-                        />
-                    </div>
+                    { props.chats?.length > 0 &&
+                        <div className={styles.chatArea}>
+                            <BalloonWrapper
+                                chats={props.chats}
+                                isMobile={props.isMobile}
+                                aiName={props.botData.ai_name}
+                                aiThumbnail={props.botData.ai_thumbnail}
+                                suggestedQueryByUserQuery={props.suggestedQueryByUserQuery}
+                                responding={props.responding}
+                                sendMessage={props.sendMessage}
+                                feedback={props.feedback}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
             <div className={styles.bottom}>

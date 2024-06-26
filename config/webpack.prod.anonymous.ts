@@ -12,7 +12,7 @@ const configuration: webpack.Configuration = {
     entry: path.resolve(__dirname, "../src/anonymous-tgram"),
     output: {
         path: path.resolve(__dirname, "../dist/prod/anonymous"),
-        filename: "[name].[contenthash].js",
+        filename: "[name].js",
         clean: true,
     },
     plugins: [

@@ -18,7 +18,7 @@ const configuration: webpack.Configuration = {
     entry: path.resolve(__dirname, "../src/dashboard-tgram"),
     output: {
         path: path.resolve(__dirname, "../dist/dev/dashboard"),
-        filename: "[name].[contenthash].js",
+        filename: "[name].js",
         clean: true,
     },
     devServer: {

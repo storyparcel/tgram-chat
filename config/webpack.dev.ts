@@ -17,7 +17,7 @@ const configuration: webpack.Configuration = {
     devtool: "inline-source-map",
     output: {
         path: path.resolve(__dirname, "../dist/dev"),
-        filename: "[name].[contenthash].js",
+        filename: "[name].js",
         clean: true,
     },
     devServer: {
